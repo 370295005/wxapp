@@ -55,5 +55,6 @@ npm install mqtt@3.0.0 --save
 import { connect } from "mqtt/dist/mqtt.js";
 5. 接收到的订阅消息是十六进制的
 使用JSON.parse()转换成字符串
+6. 微信小程序npm构建失败 SyntaxError:Invalid number(108:10)
 ```
 

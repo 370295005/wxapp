@@ -3,11 +3,13 @@
     "pages/index/main",
     "pages/logs/main"
   ],
+  "entryPagePath":"pages/index/main",
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
+    "navigationBarTitleText": "智能家居",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh":true
   },
   "permission":{
     "scope.userLocation":{
@@ -42,5 +44,9 @@
       "activeIcon": "static/tabs/orders-active.png"
     }],
     "position": "bottom"
+  },
+  "networkTimeout":{
+    "request":10000
   }
+
 }
