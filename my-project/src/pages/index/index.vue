@@ -1,7 +1,7 @@
  /* eslint-disable */ 
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-if="datalist">
     <div class="header-wrapper">
       <div class="header-title">
         <span>{{ "空气质量:" + datalist.airText }}</span>
@@ -93,7 +93,6 @@ export default {
       Light: 0, //光照度
       Led: false, //led是否开启
       Beep: false, //蜂鸣器是否开启
-      loading: true, //骨架屏是否显示
     };
   },
   computed: {
@@ -147,16 +146,14 @@ export default {
     refresh() {
       //下拉页面刷新
       if (wx.startPullDownRefresh) {
-        // console.log('成功');
-        this.getData();
+        this.$store.dispatch("getData");
         wx.stopPullDownRefresh();
       }
     },
   },
   onLoad() {
-    console.log("页面加载时触发",this.loading);
+    console.log("页面加载时触发");
     this.client = connect(mqttUrl);
-    // console.log(that.client);
     this.client.on("connect", () => {
       this.client.subscribe("/nash", (err) => {
         if (err) {
@@ -167,9 +164,6 @@ export default {
     this.getData();
   },
   onShow() {
-    console.log(this.datalist);
-    this.loading = false;
-    console.log(this.loading);
     //订阅信息
     this.client.on("message", (topic, message) => {
       console.log(topic);
@@ -234,6 +228,7 @@ export default {
       .data-text {
         color: #7f7f7f;
         .wx-switch-input {
+          //微信内置开关样式
           transform: scale(0.8) !important;
         }
         .data-title {
@@ -247,10 +242,5 @@ export default {
       }
     }
   }
-  // .bottom{
-  //   text-align: center;
-  //   bottom: 0px;
-  // }
 }
-//微信内置开关样式
 </style>

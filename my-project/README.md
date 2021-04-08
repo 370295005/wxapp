@@ -56,5 +56,8 @@ import { connect } from "mqtt/dist/mqtt.js";
 5. 接收到的订阅消息是十六进制的
 使用JSON.parse()转换成字符串
 6. 微信小程序npm构建失败 SyntaxError:Invalid number(108:10)
+疑似是node-sass引起的问题
+7. 无法引入vant weapp 提示组件未找到
+8. 安装mqtt3.0.0后构建npm会报错
 ```
 
