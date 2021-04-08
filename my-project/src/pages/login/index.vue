@@ -78,6 +78,20 @@ export default {
         forbidClick: true,
         message: this.LoginPage ? "登录中" : "注册中",
       });
+      const that = this
+      // wx.request({
+      //   url:'www.nash141.cloud',
+      //   data:{
+      //     username:that.UserName,
+      //     password:that.password,
+      //   },
+      //   header:{
+      //     'content-type':'application/json'
+      //   },
+      //   success:res=>{
+      //     console.log(res);
+      //   }
+      // })
     },
     //注册函数
     register(e) {
