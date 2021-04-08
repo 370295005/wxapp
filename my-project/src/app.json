@@ -1,9 +1,10 @@
 {
   "pages": [
     "pages/index/main",
-    "pages/logs/main"
+    "pages/logs/main",
+    "pages/login/main"
   ],
-  "entryPagePath":"pages/index/main",
+  "entryPagePath":"pages/login/main",
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -47,5 +48,12 @@
   },
   "networkTimeout":{
     "request":10000
+  },
+  "usingComponents":{
+    "van-button":"vant-weapp/dist/button/index",
+    "van-field": "vant-weapp/dist/field/index",
+    "van-toast":"vant-weapp/dist/toast/index",
+    "van-dialog":"vant-weapp/dist/dialog/index",
+    "van-icon":"vant-weapp/dist/icon/index"
   }
 }
