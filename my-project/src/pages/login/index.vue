@@ -15,18 +15,26 @@
           :value="inputUserName"
           @change="onUserNameChange"
         />
+        <div class="waring" v-if="UserNameWaring && !LoginPage">
+          {{ waring }}
+        </div>
         <van-field
           placeholder="请输入密码"
           type="password"
-          :value="inputUserPassword"
+          :value="inputPassword"
           @change="onPasswordChange"
         />
+        <div class="waring" v-if="passwordWaring && !LoginPage">
+          密码格式有误,6-18位，需包含字母和数字
+        </div>
         <van-field
           v-if="!LoginPage"
           placeholder="请输入手机号"
+          type="number"
           :value="inputPhoneNumber"
           @change="onPhoneNumberChange"
         ></van-field>
+        <div class="waring" v-if="phoneNumberWaring">手机号格式有误</div>
       </div>
       <van-button
         slot="button"
@@ -53,49 +61,145 @@ export default {
     return {
       LoginPage: true,
       inputUserName: "",
-      inputUserPassword: "",
+      inputPassword: "",
       inputPhoneNumber: "",
+      UserNameWaring: false,
+      passwordWaring: false,
+      phoneNumberWaring: false,
+      waring: "",
     };
   },
   methods: {
     //监听用户名输入
     onUserNameChange(e) {
       this.inputUserName = e.mp.detail;
+      // console.log(this.inputUserName);
+      const regx = /^[a-zA-Z0-9]{6,18}$/;
+      if (!regx.test(this.inputUserName) && this.inputUserName.trim() !== "") {
+        this.UserNameWaring = true;
+        this.waring = "用户名格式有误,6-18位，需包含字母和数字";
+      } else if (this.inputUserName.trim() == "") {
+        this.UserNameWaring = true;
+        this.waring = "用户名不得为空";
+      } else {
+        this.UserNameWaring = false;
+      }
     },
     //监听密码输入
     onPasswordChange(e) {
       this.inputPassword = e.mp.detail;
+      // console.log(this.inputPassword);
+      const regx = /^[0-9a-zA-Z]{6,18}$/;
+      if (!regx.test(this.inputPassword) && this.inputPassword.trim() !== "") {
+        this.passwordWaring = true;
+        this.waring = "密码格式有误,6-18位，需包含字母和数字";
+      } else if (this.inputPassword.trim() == "") {
+        this.passwordWaring = true;
+        this.waring = "密码不得为空";
+      } else {
+        this.passwordWaring = false;
+      }
     },
     //监听手机号输入
-    onPhoneNumberChange() {
-      this.iinputPhoneNumber = e.mp.detail;
+    onPhoneNumberChange(e) {
+      this.inputPhoneNumber = e.mp.detail;
+      // console.log(this.inputPhoneNumber);
+      const regx = /^1[3-9]\d{9}/;
+      if (
+        !regx.test(this.inputPhoneNumber) &&
+        this.inputPhoneNumber.trim() !== ""
+      ) {
+        this.phoneNumberWaring = true;
+        this.waring = "手机号格式有误";
+      } else if (this.inputPhoneNumber.trim() == "") {
+        this.waring = "手机号不得为空";
+      } else {
+        this.phoneNumberWaring = false;
+      }
     },
-    //登录
+    //登录(注册)
     login(e) {
-      console.log(e);
-      Toast.loading({
-        duration: 2000, //持续展示Toast
-        forbidClick: true,
-        message: this.LoginPage ? "登录中" : "注册中",
-      });
-      const that = this
-      // wx.request({
-      //   url:'www.nash141.cloud',
-      //   data:{
-      //     username:that.UserName,
-      //     password:that.password,
-      //   },
-      //   header:{
-      //     'content-type':'application/json'
-      //   },
-      //   success:res=>{
-      //     console.log(res);
-      //   }
-      // })
+      if (
+        this.inputUserName.trim() == "" ||
+        this.inputPassword.trim() == "" ||
+        this.inputPhoneNumber.trim() == ""
+      ) {
+        Toast.fail("信息为空");
+      } else {
+        Toast.loading({
+          duration: 0, //持续展示Toast
+          forbidClick: true,
+          message: this.LoginPage ? "登录中" : "注册中",
+          loadingType: "spinner",
+        });
+        if (this.LoginPage) {
+          //登录
+          const that = this;
+          wx.request({
+            url: `http://203.195.212.95/login.php`,
+            method: "POST",
+            data: {
+              username: this.inputUserName,
+              password: this.inputPassword,
+            },
+            header: {
+              "content-Type": "application/x-www-form-urlencoded",
+            },
+            success(res) {
+              console.log(res);
+              if (res.data.length === 0) {
+                console.log("登录失败");
+                setTimeout(() => {
+                  Toast.fail("用户名或密码错误");
+                  that.inputPassword = "";
+                }, 500);
+              } else {
+                if (res.data[0].username && res.data[0].password) {
+                  console.log("登录成功");
+                  setTimeout(() => {
+                    Toast.success("登录成功");
+                  }, 500);
+                  wx.switchTab({
+                    url: "/pages/index/main",
+                  });
+                }
+              }
+            },
+          });
+        } else {
+          //注册
+          const that = this;
+          wx.request({
+            url: "http://203.195.212.95/register.php",
+            method: "POST",
+            data: {
+              username: this.inputUserName,
+              password: this.inputPassword,
+              phonenumber: this.inputPhoneNumber,
+            },
+            header: {
+              "content-Type": "application/x-www-form-urlencoded",
+            },
+            success(res) {
+              if (res.data.status == 1) {
+                setTimeout(() => {
+                  Toast.success("注册成功");
+                  that.LoginPage = true;
+                }, 500);
+              } else {
+                setTimeout(() => {
+                  Toast.fail("注册失败");
+                  that.inputPassword = "";
+                  that.inputUserName = "";
+                  that.inputPhoneNumber = "";
+                }, 500);
+              }
+            },
+          });
+        }
+      }
     },
-    //注册函数
     register(e) {
-      console.log(e);
       this.LoginPage = !this.LoginPage;
     },
     //忘记密码
@@ -127,7 +231,12 @@ export default {
   background-color: #fff;
   padding: 20px;
   .login-form {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    .waring {
+      padding: 10px 15px;
+      color: red;
+      font-size: 12px;
+    }
   }
   .other-option {
     display: flex;

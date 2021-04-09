@@ -1,8 +1,9 @@
 {
   "pages": [
+    "pages/login/main",
     "pages/index/main",
-    "pages/logs/main",
-    "pages/login/main"
+    "pages/logs/main"
+    
   ],
   "entryPagePath":"pages/login/main",
   "window": {
