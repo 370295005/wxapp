@@ -5,7 +5,7 @@
     "pages/logs/main"
     
   ],
-  "entryPagePath":"pages/login/main",
+  "entryPagePath":"pages/index/main",
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -29,7 +29,7 @@
       "iconPath": "static/tabs/home.png",
       "selectedIconPath": "static/tabs/home-active.png"
     }, {
-      "text": "我的",
+      "text": "数据",
       "pagePath": "pages/logs/main",
       "iconPath": "static/tabs/orders.png",
       "selectedIconPath": "static/tabs/orders-active.png"

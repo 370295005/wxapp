@@ -14,6 +14,9 @@ export default new Vuex.Store({
       airValue: '', // 空气指数
       weather: '', // 天气
       weatherAdvice: '' // 天气建议
+    },
+    analysis: {
+      day3: []
     }
   },
   mutations: {
@@ -34,6 +37,9 @@ export default new Vuex.Store({
     SetAirQuality (state, data) {
       state.datalist.airValue = data.aqi
       state.datalist.airText = data.category
+    },
+    Set3dayweather (state, data) {
+      state.analysis.day3.push(data)
     }
   },
   actions: {
@@ -72,6 +78,16 @@ export default new Vuex.Store({
             success (res) {
               console.log('空气质量', res.data.now)
               context.commit('SetAirQuality', res.data.now)
+            }
+          })
+          wx.request({
+            url: `https://devapi.qweather.com/v7/weather/3d?location=113.93041,22.53332&key=f507fd5392b841f397d079ec6bb34b94`,
+            success (res) {
+              console.log('3天数据', res.data.daily)
+              for (let i = 0; i < res.data.daily.length; i++) {
+                context.commit('Set3dayweather', res.data.daily[i].tempMax)
+                console.log(res.data.daily[i].tempMax)
+              }
             }
           })
         }

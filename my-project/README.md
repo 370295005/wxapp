@@ -59,5 +59,6 @@ import { connect } from "mqtt/dist/mqtt.js";
 疑似是node-sass引起的问题
 7. 无法引入vant weapp 提示组件未找到
 8. 安装mqtt3.0.0后构建npm会报错
+9. vue不提供onblur事件
 ```
 

@@ -91,13 +91,14 @@ export default {
       Temp: 0, //温度
       Hum: 0, //湿度
       Light: 0, //光照度
-      Led: false, //led是否开启
-      Beep: false, //蜂鸣器是否开启
+      Led: 0, //led是否开启
+      Beep: 0, //蜂鸣器是否开启
     };
   },
   computed: {
     ...mapState({
       datalist: (state) => state.datalist,
+      day3: (state) => state.analysis.day3,
     }),
   },
   methods: {
@@ -152,10 +153,9 @@ export default {
     },
   },
   onLoad() {
-    console.log("页面加载时触发");
     this.client = connect(mqttUrl);
     this.client.on("connect", () => {
-      this.client.subscribe("/nash", (err) => {
+      this.client.subscribe("/smart/sub", (err) => {
         if (err) {
           console.log(err);
         }
@@ -164,16 +164,18 @@ export default {
     this.getData();
   },
   onShow() {
+    console.log(this.day3);
     //订阅信息
     this.client.on("message", (topic, message) => {
-      console.log(topic);
+      let date = new Date();
+      let day = date.getDate(); //天数
       let dataFromDevice = JSON.parse(message);
       console.log(dataFromDevice);
       this.Temp = dataFromDevice.Temp;
       this.Hum = dataFromDevice.Hum;
       this.Light = dataFromDevice.Light;
-      this.Led = dataFromDevice.Led;
-      this.Beep = dataFromDevice.Beep;
+      this.Led = dataFromDevice.LED_SW;
+      this.Beep = dataFromDevice.BEEP_SW;
     });
   },
   onPullDownRefresh() {
