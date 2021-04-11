@@ -1,0 +1,60 @@
+{
+  "pages": [
+    "pages/login/main",
+    "pages/index/main",
+    "pages/logs/main"
+    
+  ],
+  "entryPagePath":"pages/index/main",
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "智能家居",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh":true
+  },
+  "permission":{
+    "scope.userLocation":{
+      "desc":"你的位置信息将用于获取天气信息"
+    }
+  },
+  "tabBar": {
+    "color": "#333",
+    "backgroundColor": "#fafafa",
+    "selectedColor": "#3d7ef9",
+    "borderStyle": "white",
+    "list": [{
+      "text": "首页",
+      "pagePath": "pages/index/main",
+      "iconPath": "static/tabs/home.png",
+      "selectedIconPath": "static/tabs/home-active.png"
+    }, {
+      "text": "数据",
+      "pagePath": "pages/logs/main",
+      "iconPath": "static/tabs/orders.png",
+      "selectedIconPath": "static/tabs/orders-active.png"
+    }],
+    "items": [{
+      "name": "首页",
+      "pagePath": "pages/index/main",
+      "icon": "static/tabs/home.png",
+      "activeIcon": "static/tabs/home-active.png"
+    }, {
+      "name": "订单",
+      "pagePath": "pages/logs/main",
+      "icon": "static/tabs/orders.png",
+      "activeIcon": "static/tabs/orders-active.png"
+    }],
+    "position": "bottom"
+  },
+  "networkTimeout":{
+    "request":10000
+  },
+  "usingComponents":{
+    "van-button":"vant-weapp/dist/button/index",
+    "van-field": "vant-weapp/dist/field/index",
+    "van-toast":"vant-weapp/dist/toast/index",
+    "van-dialog":"vant-weapp/dist/dialog/index",
+    "van-icon":"vant-weapp/dist/icon/index"
+  }
+}
