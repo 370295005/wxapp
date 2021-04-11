@@ -60,5 +60,7 @@ import { connect } from "mqtt/dist/mqtt.js";
 7. 无法引入vant weapp 提示组件未找到
 8. 安装mqtt3.0.0后构建npm会报错
 9. vue不提供onblur事件
+10. echarts动态渲染数据
+https://www.cnblogs.com/wangyang0210/p/10683139.html
 ```
 
