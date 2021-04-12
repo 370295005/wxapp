@@ -1,17 +1,19 @@
  /* eslint-disable */ 
 
 <template>
-  <div class="wrapper" v-if="datalist">
+  <div class="wrapper">
     <div class="header-wrapper">
-      <div class="header-title">
-        <span>{{ "空气质量:" + datalist.airText }}</span>
-        <span>{{ datalist.city }} {{ datalist.area }}</span>
-      </div>
-      <div class="header-text">
-        <span>{{ datalist.airValue }}</span>
-        <span>{{ datalist.weather }}</span>
-      </div>
-      <div class="weather-advice">{{ datalist.weatherAdvice }}</div>
+      <van-skeleton :row="3" :loading="loading">
+        <div class="header-title">
+          <span>{{ "空气质量:" + datalist.airText }}</span>
+          <span>{{ datalist.city }} {{ datalist.area }}</span>
+        </div>
+        <div class="header-text">
+          <span>{{ datalist.airValue }}</span>
+          <span>{{ datalist.weather }}</span>
+        </div>
+        <div class="weather-advice">{{ datalist.weatherAdvice }}</div>
+      </van-skeleton>
     </div>
     <div class="body-wrapper">
       <div class="body">
@@ -99,7 +101,11 @@ export default {
     ...mapState({
       datalist: (state) => state.datalist,
       day3: (state) => state.analysis.day3,
+      loading: (state) => state.loading,
     }),
+  },
+  watch: {
+    loading() {},
   },
   methods: {
     onLedChange(e) {
@@ -143,6 +149,7 @@ export default {
       if (this.$store.state.datalist.city === "") {
         this.$store.dispatch("getData");
       }
+      console.log(this.loading);
     },
     refresh() {
       //下拉页面刷新
@@ -164,7 +171,6 @@ export default {
     this.getData();
   },
   onShow() {
-    console.log(this.day3);
     //订阅信息
     this.client.on("message", (topic, message) => {
       let date = new Date();

@@ -51,10 +51,11 @@
     "request":10000
   },
   "usingComponents":{
-    "van-button":"vant-weapp/dist/button/index",
-    "van-field": "vant-weapp/dist/field/index",
-    "van-toast":"vant-weapp/dist/toast/index",
-    "van-dialog":"vant-weapp/dist/dialog/index",
-    "van-icon":"vant-weapp/dist/icon/index"
+    "van-button":"@vant/weapp/dist/button/index",
+    "van-field": "@vant/weapp/dist/field/index",
+    "van-toast":"@vant/weapp/dist/toast/index",
+    "van-dialog":"@vant/weapp/dist/dialog/index",
+    "van-icon":"@vant/weapp/dist/icon/index",
+    "van-skeleton":"@vant/weapp/dist/skeleton/index"
   }
 }

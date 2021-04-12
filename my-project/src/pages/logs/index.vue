@@ -1,19 +1,13 @@
 <template>
   <div class="container">
     <div class="wrap">
-      <mpvue-echarts
-        lazyLoad
-        :echarts="echarts"
-        :onInit="handleInit"
-        ref="echarts"
-      />
+      <mpvue-echarts :echarts="echarts" :onInit="handleInit" ref="echarts" />
     </div>
   </div>
 </template>
-
 <script>
 import { mapState } from "vuex";
-import * as echarts from "echarts/dist/echarts.simple.min";
+import * as echarts from "echarts/dist/echarts.min";
 import mpvueEcharts from "mpvue-echarts";
 let chart = null;
 export default {
@@ -21,7 +15,6 @@ export default {
     return {
       option: null,
       echarts,
-      share: [],
     };
   },
   components: {
@@ -45,26 +38,26 @@ export default {
     initChart() {
       this.option = {
         backgroundColor: "#fff",
-        color: ["#67E0E3"],
+        color: ["#3d7ef9"],
         title: {
           text: "最高温度",
         },
         tooltip: {
           trigger: "axis",
         },
-        legend: {
-          data: ["温度"],
-          top: "top",
-        },
         grid: {
-          containLabel: true,
+          containLabel: false,
+          tooltip: {
+            show: true,
+            trigger: "axis",
+          },
         },
         xAxis: {
           type: "category",
           name: "min",
-          nameLocation: "middle",
+          nameLocation: "end",
           data: this.currenttime,
-          minInterval:1
+          // data: [24, 25, 19, 29, 25, 28, 20, 25, 26, 22, 21, 25, 29],
         },
         yAxis: {
           type: "value",
@@ -76,28 +69,38 @@ export default {
           name: "Temp",
           nameLocation: "end",
         },
+        dataZoom: [
+          // {
+          //   start: 0,
+          //   end: 20,
+          //   type: "inside",
+          //   filterMode: "filter",
+          // },
+          {
+            start: 0,
+            end: 50,
+            type: "inside",
+          },
+        ],
         series: [
           {
             name: "温度",
             type: "line",
-            smooth: false,
+            smooth: false, //是否平滑显示曲线
             label: {
+              //是否显示标签
               normal: {
                 show: true,
-                padding: [0, 7, 0, 0],
               },
             },
             data: this.devicetempdata,
+            // data: [24, 25, 19, 29, 25, 28, 20, 25, 26, 22, 21, 25, 29],
           },
         ],
-        dataZoom: {
-          start: 0,
-          type: "inside",
-          rangeMode: ["value", "value"],
-        },
       };
       this.$refs.echarts.init();
     },
+    //初始化echarts
     handleInit(canvas, width, height) {
       chart = echarts.init(canvas, null, {
         width: width,
@@ -107,12 +110,12 @@ export default {
       chart.setOption(this.option);
       return chart;
     },
+    //更新数据
     query() {
       const that = this;
       that.initChart();
     },
   },
-  onShareAppMessage() {},
 };
 </script>
 

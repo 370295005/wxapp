@@ -151,8 +151,8 @@ if (/^(wx)$/.test(PLATFORM)) {
   baseWebpackConfig = merge(baseWebpackConfig, {
     plugins: [
       new CopyWebpackPlugin([{
-        from: resolve('node_modules/vant-weapp/dist'),
-        to: path.resolve('dist/wx/vant-weapp/dist')
+        from: resolve('node_modules/@vant/weapp/dist'),
+        to: path.resolve('dist/wx/@vant/weapp/dist')
       }])
     ]
   })

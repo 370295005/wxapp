@@ -25,7 +25,7 @@
           @change="onPasswordChange"
         />
         <div class="waring" v-if="passwordWaring && !LoginPage">
-          密码格式有误,6-18位，需包含字母和数字
+          {{ waring }}
         </div>
         <van-field
           v-if="!LoginPage"
@@ -34,7 +34,9 @@
           :value="inputPhoneNumber"
           @change="onPhoneNumberChange"
         ></van-field>
-        <div class="waring" v-if="phoneNumberWaring">手机号格式有误</div>
+        <div class="waring" v-if="phoneNumberWaring && !LoginPage">
+          {{ waring }}
+        </div>
       </div>
       <van-button
         slot="button"
@@ -51,11 +53,14 @@
         <span @click="forgetPassword">忘记密码</span>
       </div>
       <van-toast id="van-toast" />
+      <van-dialog id="van-dialog" >
+      </van-dialog>
     </div>
   </div>
 </template>
 <script>
-import Toast from "vant-weapp/dist/toast/toast";
+import Toast from "@vant/weapp/dist/toast/toast";
+import Dialog from "@vant/weapp/dist/dialog/dialog";
 export default {
   data() {
     return {
@@ -74,136 +79,174 @@ export default {
     onUserNameChange(e) {
       this.inputUserName = e.mp.detail;
       // console.log(this.inputUserName);
-      const regx = /^[a-zA-Z0-9]{6,18}$/;
-      if (!regx.test(this.inputUserName) && this.inputUserName.trim() !== "") {
-        this.UserNameWaring = true;
-        this.waring = "用户名格式有误,6-18位，需包含字母和数字";
-      } else if (this.inputUserName.trim() == "") {
-        this.UserNameWaring = true;
-        this.waring = "用户名不得为空";
-      } else {
-        this.UserNameWaring = false;
+      if (!this.LoginPage) {
+        const regx = /^[a-zA-Z0-9]{6,18}$/;
+        if (
+          !regx.test(this.inputUserName) &&
+          this.inputUserName.trim() !== ""
+        ) {
+          this.UserNameWaring = true;
+          this.waring = "用户名格式有误,6-18位，字母或数字";
+        } else if (this.inputUserName.trim() == "") {
+          this.UserNameWaring = true;
+          this.waring = "用户名不得为空";
+        } else {
+          this.waring = "";
+          this.UserNameWaring = false;
+        }
       }
     },
     //监听密码输入
     onPasswordChange(e) {
       this.inputPassword = e.mp.detail;
       // console.log(this.inputPassword);
-      const regx = /^[0-9a-zA-Z]{6,18}$/;
-      if (!regx.test(this.inputPassword) && this.inputPassword.trim() !== "") {
-        this.passwordWaring = true;
-        this.waring = "密码格式有误,6-18位，需包含字母和数字";
-      } else if (this.inputPassword.trim() == "") {
-        this.passwordWaring = true;
-        this.waring = "密码不得为空";
-      } else {
-        this.passwordWaring = false;
+      if (!this.LoginPage) {
+        const regx = /^[0-9a-zA-Z]{6,18}$/;
+        if (
+          !regx.test(this.inputPassword) &&
+          this.inputPassword.trim() !== ""
+        ) {
+          this.passwordWaring = true;
+          this.waring = "密码格式有误,6-18位，字母或数字";
+        } else if (this.inputPassword.trim() == "") {
+          this.passwordWaring = true;
+          this.waring = "密码不得为空";
+        } else {
+          this.waring = "";
+          this.passwordWaring = false;
+        }
       }
     },
     //监听手机号输入
     onPhoneNumberChange(e) {
       this.inputPhoneNumber = e.mp.detail;
       // console.log(this.inputPhoneNumber);
-      const regx = /^1[3-9]\d{9}/;
-      if (
-        !regx.test(this.inputPhoneNumber) &&
-        this.inputPhoneNumber.trim() !== ""
-      ) {
-        this.phoneNumberWaring = true;
-        this.waring = "手机号格式有误";
-      } else if (this.inputPhoneNumber.trim() == "") {
-        this.waring = "手机号不得为空";
-      } else {
-        this.phoneNumberWaring = false;
+      if (!this.LoginPage) {
+        const regx = /^1[3-9]\d{9}/;
+        if (
+          !regx.test(this.inputPhoneNumber) &&
+          this.inputPhoneNumber.trim() !== ""
+        ) {
+          this.phoneNumberWaring = true;
+          this.waring = "手机号格式有误";
+        } else if (this.inputPhoneNumber.trim() == "") {
+          this.waring = "手机号不得为空";
+        } else {
+          this.waring = "";
+          this.phoneNumberWaring = false;
+        }
       }
     },
     //登录(注册)
     login(e) {
-      if (
-        this.inputUserName.trim() == "" ||
-        this.inputPassword.trim() == "" ||
-        this.inputPhoneNumber.trim() == ""
-      ) {
-        Toast.fail("信息为空");
+      if (this.waring) {
+        Toast.fail(this.waring);
       } else {
-        Toast.loading({
-          duration: 0, //持续展示Toast
-          forbidClick: true,
-          message: this.LoginPage ? "登录中" : "注册中",
-          loadingType: "spinner",
-        });
+        //登录
         if (this.LoginPage) {
-          //登录
-          const that = this;
-          wx.request({
-            url: `http://203.195.212.95/login.php`,
-            method: "POST",
-            data: {
-              username: this.inputUserName,
-              password: this.inputPassword,
-            },
-            header: {
-              "content-Type": "application/x-www-form-urlencoded",
-            },
-            success(res) {
-              console.log(res);
-              if (res.data.length === 0) {
-                console.log("登录失败");
-                setTimeout(() => {
-                  Toast.fail("用户名或密码错误");
-                  that.inputPassword = "";
-                }, 500);
-              } else {
-                if (res.data[0].username && res.data[0].password) {
-                  console.log("登录成功");
+          if (
+            this.inputUserName.trim() !== "" &&
+            this.inputPassword.trim() !== ""
+          ) {
+            Toast.loading({
+              duration: 0, //持续展示Toast
+              forbidClick: true,
+              message: this.LoginPage ? "登录中" : "注册中",
+              loadingType: "spinner",
+            });
+            const that = this;
+            wx.request({
+              url: `http://203.195.212.95/login.php`,
+              method: "POST",
+              data: {
+                username: this.inputUserName,
+                password: this.inputPassword,
+              },
+              header: {
+                "content-Type": "application/x-www-form-urlencoded",
+              },
+              success(res) {
+                if (res.data.length === 0) {
                   setTimeout(() => {
-                    Toast.success("登录成功");
+                    Toast.fail("用户名或密码错误");
+                    that.inputPassword = "";
                   }, 500);
-                  wx.switchTab({
-                    url: "/pages/index/main",
-                  });
                 }
-              }
-            },
-          });
+              },
+            });
+          } else {
+            Toast.fail("账号或密码为空");
+          }
         } else {
           //注册
-          const that = this;
-          wx.request({
-            url: "http://203.195.212.95/register.php",
-            method: "POST",
-            data: {
-              username: this.inputUserName,
-              password: this.inputPassword,
-              phonenumber: this.inputPhoneNumber,
-            },
-            header: {
-              "content-Type": "application/x-www-form-urlencoded",
-            },
-            success(res) {
-              if (res.data.status == 1) {
-                setTimeout(() => {
-                  Toast.success("注册成功");
-                  that.LoginPage = true;
-                }, 500);
-              } else {
-                setTimeout(() => {
-                  Toast.fail("注册失败");
-                  that.inputPassword = "";
-                  that.inputUserName = "";
-                  that.inputPhoneNumber = "";
-                }, 500);
-              }
-            },
-          });
+          if (
+            this.inputUserName.trim() == !"" &&
+            this.inputPassword.trim() == !"" &&
+            this.inputPhoneNumber.trim() == !""
+          ) {
+            Toast.loading({
+              duration: 0, //持续展示Toast
+              forbidClick: true,
+              message: this.LoginPage ? "登录中" : "注册中",
+              loadingType: "spinner",
+            });
+            const that = this;
+            wx.request({
+              url: "http://203.195.212.95/register.php",
+              method: "POST",
+              data: {
+                username: this.inputUserName,
+                password: this.inputPassword,
+                phonenumber: this.inputPhoneNumber,
+              },
+              header: {
+                "content-Type": "application/x-www-form-urlencoded",
+              },
+              success(res) {
+                if (res.data.status == 1) {
+                  setTimeout(() => {
+                    Toast.success("注册成功");
+                    that.LoginPage = true;
+                  }, 500);
+                } else {
+                  setTimeout(() => {
+                    Toast.fail("注册失败");
+                    that.inputPassword = "";
+                    that.inputUserName = "";
+                    that.inputPhoneNumber = "";
+                  }, 500);
+                }
+              },
+            });
+          } else {
+            Toast.fail("请正确输入注册信息");
+          }
         }
       }
     },
+    //切换登录注册
     register(e) {
+      this.inputUserName = "";
+      this.inputPassword = "";
       this.LoginPage = !this.LoginPage;
     },
     //忘记密码
-    forgetPassword(e) {},
+    forgetPassword(e) {
+      console.log("wangjimima");
+      Dialog.confirm({
+        title: "忘记密码",
+        message: "弹窗内容",
+      })
+        .then(() => {
+          // on confirm
+          console.log("confirm");
+
+        })
+        .catch(() => {
+          // on cancel
+          console.log("cancel");
+        });
+    },
   },
 };
 </script>

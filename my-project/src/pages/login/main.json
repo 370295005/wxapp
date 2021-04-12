@@ -3,5 +3,6 @@
   "navigationBarBackgroundColor": "#3d7ef9",
   "navigationBarTitleText": "",
   "navigationBarTextStyle": "white",
-  "backgroundColoeTop":"#3d7ef9"
+  "backgroundColoeTop":"#3d7ef9",
+  "enablePullDownRefresh":false
 }

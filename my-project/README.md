@@ -58,9 +58,17 @@ import { connect } from "mqtt/dist/mqtt.js";
 6. 微信小程序npm构建失败 SyntaxError:Invalid number(108:10)
 疑似是node-sass引起的问题
 7. 无法引入vant weapp 提示组件未找到
-8. 安装mqtt3.0.0后构建npm会报错
+修改webpack打包规则 使其能正确找到组件位置
+8. 安装mqtt3.0.0后构建npm会报错，会提示部分入口文件未找到
 9. vue不提供onblur事件
 10. echarts动态渲染数据
 https://www.cnblogs.com/wangyang0210/p/10683139.html
+11. echarts dataZoom不生效的问题
+引入了错误的文件 echarts/dist/echarts.simple.min
+应当为 echarts/dist/echarts.min
+12. datazoom生效后数据不显示的问题
+x轴data不得为空
+13. vant提供的toast若提示信息过长会自动换行导致样式不好看的问题
+把van-toast--icon 的宽度设置去除即可
 ```
 
