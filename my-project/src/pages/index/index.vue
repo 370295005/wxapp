@@ -174,8 +174,9 @@ export default {
     //订阅信息
     this.client.on("message", (topic, message) => {
       let date = new Date();
-      // let day = date.getDate(); //天数
-      let second = date.getSeconds();
+      let sec = date.getSeconds();
+      let min = date.getMinutes();
+      let time = min + "分" + sec + "秒";
       let dataFromDevice = JSON.parse(message);
       console.log(dataFromDevice);
       this.Temp = dataFromDevice.Temp;
@@ -184,7 +185,10 @@ export default {
       this.Led = dataFromDevice.LED_SW;
       this.Beep = dataFromDevice.BEEP_SW;
       this.$store.commit("SetDeviceTempData", this.Temp);
-      this.$store.commit("SetCurrentTime", second);
+      this.$store.commit("SetDeviceHumData", this.Hum);
+      this.$store.commit("SetCurrentTime", time);
+      // this.$store.commit("SetCurrentSec", sec);
+      // this.$store.commit("SetCurrentMin", min);
     });
   },
   onPullDownRefresh() {

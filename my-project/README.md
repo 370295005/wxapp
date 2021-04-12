@@ -70,5 +70,7 @@ https://www.cnblogs.com/wangyang0210/p/10683139.html
 x轴data不得为空
 13. vant提供的toast若提示信息过长会自动换行导致样式不好看的问题
 把van-toast--icon 的宽度设置去除即可
+14. 在还没有进入数据分析页面时，canvas还没有初始化，若此时传入数据则会报错
+
 ```
 

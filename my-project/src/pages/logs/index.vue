@@ -3,6 +3,12 @@
     <div class="wrap">
       <mpvue-echarts :echarts="echarts" :onInit="handleInit" ref="echarts" />
     </div>
+    <div class="analysis">
+      <div>最高温度:{{ maxtemp }}°C</div>
+      <div>最低温度:{{ mintemp }}°C</div>
+      <div>最高湿度:{{ maxhum }}%</div>
+      <div>最低湿度:{{ minhum }}%</div>
+    </div>
   </div>
 </template>
 <script>
@@ -15,6 +21,10 @@ export default {
     return {
       option: null,
       echarts,
+      maxtemp: 0,
+      mintemp: 0,
+      maxhum: 0,
+      minhum: 0,
     };
   },
   components: {
@@ -23,6 +33,9 @@ export default {
   computed: {
     ...mapState({
       devicetempdata: (state) => state.devicetempdata,
+      devicehumdata: (state) => state.devicehumdata,
+      // currentsec: (state) => state.currentsec,
+      // currentmin: (state) => state.currentmin,
       currenttime: (state) => state.currenttime,
     }),
   },
@@ -32,15 +45,20 @@ export default {
   watch: {
     devicetempdata() {
       this.query();
+      this.maxtemp = Math.max.apply(null, this.devicetempdata);
+      this.mintemp = Math.min.apply(null, this.devicetempdata);
+      this.maxhum = Math.max.apply(null, this.devicehumdata);
+      this.minhum = Math.min.apply(null, this.devicehumdata);
+      console.log(this.maxtemp);
     },
   },
   methods: {
     initChart() {
       this.option = {
         backgroundColor: "#fff",
-        color: ["#3d7ef9"],
+        color: ["#3d7ef9", "#d9d942"],
         title: {
-          text: "最高温度",
+          text: "设备数据统计",
         },
         tooltip: {
           trigger: "axis",
@@ -52,33 +70,37 @@ export default {
             trigger: "axis",
           },
         },
+        legend: {
+          type: "plain",
+          show: true,
+          left: "center",
+          top: "top",
+        },
         xAxis: {
           type: "category",
-          name: "min",
+          name: "time",
           nameLocation: "end",
+          // data: this.currentsec + "分" + this.currentmin + '秒',
           data: this.currenttime,
           // data: [24, 25, 19, 29, 25, 28, 20, 25, 26, 22, 21, 25, 29],
         },
-        yAxis: {
-          type: "value",
-          splitLine: {
-            lineStyle: {
-              type: "dashed",
-            },
-          },
-          name: "Temp",
-          nameLocation: "end",
-        },
-        dataZoom: [
-          // {
-          //   start: 0,
-          //   end: 20,
-          //   type: "inside",
-          //   filterMode: "filter",
-          // },
+        yAxis: [
           {
-            start: 0,
-            end: 50,
+            type: "value",
+            splitLine: {
+              lineStyle: {
+                type: "dashed",
+              },
+            },
+            name: "Temp",
+            nameLocation: "end",
+          },
+        ],
+        //x轴可滑动
+        dataZoom: [
+          {
+            start: 50,
+            end: 100,
             type: "inside",
           },
         ],
@@ -95,6 +117,18 @@ export default {
             },
             data: this.devicetempdata,
             // data: [24, 25, 19, 29, 25, 28, 20, 25, 26, 22, 21, 25, 29],
+          },
+          {
+            name: "湿度",
+            type: "line",
+            smooth: false,
+            label: {
+              normal: {
+                show: true,
+              },
+            },
+            // data: [24, 25, 19, 29, 25, 28, 20, 25, 26, 22, 21, 25, 29],
+            data: this.devicehumdata,
           },
         ],
       };

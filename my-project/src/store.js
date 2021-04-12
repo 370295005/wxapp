@@ -22,6 +22,8 @@ export default new Vuex.Store({
     loading: true,
     devicetempdata: [],
     devicehumdata: [],
+    // currentsec: [],
+    // currentmin: []
     currenttime: []
 
   },
@@ -50,9 +52,18 @@ export default new Vuex.Store({
     SetDeviceTempData (state, data) {
       state.devicetempdata.push(data)
     },
+    SetDeviceHumData (state, data) {
+      state.devicehumdata.push(data)
+    },
     SetCurrentTime (state, data) {
       state.currenttime.push(data)
     },
+    // SetCurrentSec (state, data) {
+    //   state.currentsec.push(data)
+    // },
+    // SetCurrentMin (state, data) {
+    //   state.currentmin.push(data)
+    // },
     SetLoading (state, data) {
       state.loading = data
     }
