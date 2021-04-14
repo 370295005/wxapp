@@ -116,7 +116,9 @@ export default new Vuex.Store({
               }
             }
           })
-          context.commit('SetLoading', false)
+          setTimeout(() => {
+            context.commit('SetLoading', false)
+          }, 1000)
         }
       })
     }
