@@ -2,15 +2,12 @@
   <div class="container">
     <div class="wrap">
       <mpvue-echarts :echarts="echarts" :onInit="handleInit" ref="echarts" />
-      <!-- <mpvue-echarts :echarts="echarts" :onInit="HandleInit" ref="Echarts" /> -->
     </div>
     <div class="analysis">
       <div>最高温度:{{ maxtemp }}°C</div>
       <div>最低温度:{{ mintemp }}°C</div>
       <div>最高湿度:{{ maxhum }}%</div>
       <div>最低湿度:{{ minhum }}%</div>
-      <div>平均温度:{{ avgtemp }}°C</div>
-      <div>平均湿度:{{ avghum }}%</div>
     </div>
   </div>
 </template>
@@ -28,8 +25,6 @@ export default {
       mintemp: 0,
       maxhum: 0,
       minhum: 0,
-      avgtemp: 0,
-      avghum: 0,
     };
   },
   components: {
@@ -39,13 +34,13 @@ export default {
     ...mapState({
       devicetempdata: (state) => state.devicetempdata,
       devicehumdata: (state) => state.devicehumdata,
+      // currentsec: (state) => state.currentsec,
+      // currentmin: (state) => state.currentmin,
       currenttime: (state) => state.currenttime,
     }),
   },
   mounted() {
-    this.initChart();
     this.query();
-
   },
   watch: {
     devicetempdata() {
@@ -54,15 +49,14 @@ export default {
       this.mintemp = Math.min.apply(null, this.devicetempdata);
       this.maxhum = Math.max.apply(null, this.devicehumdata);
       this.minhum = Math.min.apply(null, this.devicehumdata);
-      this.avgtemp = this.avg(this.devicetempdata);
-      this.avghum = this.avg(this.devicehumdata);
+      console.log(this.maxtemp);
     },
   },
   methods: {
     initChart() {
       this.option = {
         backgroundColor: "#fff",
-        // color: ["#3d7ef9", "#00FF7F"],
+        color: ["#3d7ef9", "#d9d942"],
         title: {
           text: "设备数据统计",
         },
@@ -139,7 +133,6 @@ export default {
         ],
       };
       this.$refs.echarts.init();
-      // this.handleInit()
     },
     //初始化echarts
     handleInit(canvas, width, height) {
@@ -153,16 +146,8 @@ export default {
     },
     //更新数据
     query() {
-      this.initChart()
-    },
-    //数组求平均值
-    avg(arr) {
-      let len = arr.length;
-      let sum = 0;
-      for (let i = 0; i < len; i++) {
-        sum += arr[i];
-      }
-      return parseFloat(sum / len).toFixed(2);
+      const that = this;
+      that.initChart();
     },
   },
 };
