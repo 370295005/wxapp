@@ -53,8 +53,7 @@
         <span @click="forgetPassword">忘记密码</span>
       </div>
       <van-toast id="van-toast" />
-      <van-dialog id="van-dialog" >
-      </van-dialog>
+      <van-dialog id="van-dialog"> </van-dialog>
     </div>
   </div>
 </template>
@@ -171,6 +170,16 @@ export default {
                     Toast.fail("用户名或密码错误");
                     that.inputPassword = "";
                   }, 500);
+                } else if (
+                  res.data[0].username === that.inputUserName &&
+                  res.data[0].password === that.inputPassword
+                ) {
+                  Toast.success("登录成功");
+                  setTimeout(() => {
+                    wx.switchTab({
+                      url: "/pages/index/main",
+                    });
+                  }, 500);
                 }
               },
             });
@@ -240,7 +249,6 @@ export default {
         .then(() => {
           // on confirm
           console.log("confirm");
-
         })
         .catch(() => {
           // on cancel

@@ -3,7 +3,7 @@
 <template>
   <div class="wrapper">
     <div class="header-wrapper">
-      <van-skeleton :row="5" :loading="loading">
+      <van-skeleton :row="4" :loading="loading">
         <div class="header-title">
           <span>{{ "空气质量:" + datalist.airText }}</span>
           <span>{{ datalist.city }} {{ datalist.area }}</span>

@@ -5,7 +5,7 @@
     "pages/logs/main"
     
   ],
-  "entryPagePath":"pages/index/main",
+  "entryPagePath":"pages/login/main",
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",

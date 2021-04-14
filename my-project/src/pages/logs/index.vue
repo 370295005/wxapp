@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="Container">
     <div class="wrap">
       <mpvue-echarts :echarts="echarts" :onInit="handleInit" ref="echarts" />
     </div>
@@ -53,7 +53,6 @@ export default {
       this.minhum = Math.min.apply(null, this.devicehumdata);
       this.avgtemp = this.avg(this.devicetempdata);
       this.avghum = this.avg(this.devicehumdata);
-      console.log(this.maxtemp);
     },
   },
   methods: {
@@ -84,6 +83,7 @@ export default {
           type: "category",
           name: "time",
           nameLocation: "end",
+          nameGap:5,
           // data: this.currentsec + "分" + this.currentmin + '秒',
           data: this.currenttime,
           // data: [24, 25, 19, 29, 25, 28, 20, 25, 26, 22, 21, 25, 29],
@@ -150,8 +150,8 @@ export default {
     },
     //更新数据
     query() {
-      const that = this;
-      that.initChart();
+      console.log(chart);
+      this.initChart();
     },
     //数组求平均值
     avg(arr) {
@@ -161,14 +161,21 @@ export default {
         sum += arr[i];
       }
       return parseFloat(sum / len).toFixed(2);
-    }
+    },
   },
 };
 </script>
 
-<style scoped>
-.wrap {
-  width: 100%;
-  height: 300px;
+<style lang="scss" scoped>
+.Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .wrap {
+    width: 100%;
+    margin: 0 auto;
+    height: 300px;
+  }
 }
 </style>
