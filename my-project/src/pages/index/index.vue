@@ -78,13 +78,14 @@
         </div>
       </div>
     </div>
+    <van-toast id="van-toast" />
   </div>
 </template>
 
 <script>
 import { connect } from "mqtt/dist/mqtt.js";
 import { mapState } from "vuex";
-
+import Toast from "@vant/weapp/dist/toast/toast";
 const mqttUrl = "wxs://www.nash141.cloud:8084/mqtt";
 export default {
   data() {
@@ -151,7 +152,12 @@ export default {
     },
     //下拉页面刷新
     refresh() {
-      
+      Toast.loading({
+        duration: 500,
+        forbidClick: true,
+        message: "刷新中...",
+        loadingType: "spinner",
+      });
       if (wx.startPullDownRefresh) {
         this.$store.dispatch("getData");
         wx.stopPullDownRefresh();
