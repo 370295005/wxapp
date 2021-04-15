@@ -89,7 +89,7 @@ const mqttUrl = "wxs://www.nash141.cloud:8084/mqtt";
 export default {
   data() {
     return {
-      client: {},
+      client: {}, //连接对象
       Temp: 0, //温度
       Hum: 0, //湿度
       Light: 0, //光照度
@@ -100,14 +100,11 @@ export default {
   computed: {
     ...mapState({
       datalist: (state) => state.datalist,
-      day3: (state) => state.analysis.day3,
       loading: (state) => state.loading,
     }),
   },
-  watch: {
-    loading() {},
-  },
   methods: {
+    //监听led灯
     onLedChange(e) {
       //开关当前取值
       let sw = e.mp.detail.value;
@@ -127,6 +124,7 @@ export default {
         });
       }
     },
+    //监听蜂鸣器
     onBeepChange(e) {
       let sw = e.mp.detail.value;
       if (sw) {
@@ -145,21 +143,24 @@ export default {
         });
       }
     },
+    //获取数据
     getData() {
       if (this.$store.state.datalist.city === "") {
         this.$store.dispatch("getData");
       }
-      console.log(this.loading);
     },
+    //下拉页面刷新
     refresh() {
-      //下拉页面刷新
+      
       if (wx.startPullDownRefresh) {
         this.$store.dispatch("getData");
         wx.stopPullDownRefresh();
       }
     },
   },
+  //页面加载钩子
   onLoad() {
+    //连接mqqt伺服器
     this.client = connect(mqttUrl);
     this.client.on("connect", () => {
       this.client.subscribe("/smart/sub", (err) => {
@@ -170,6 +171,7 @@ export default {
     });
     this.getData();
   },
+  //页面展示钩子
   onShow() {
     //订阅信息
     this.client.on("message", (topic, message) => {
@@ -184,13 +186,14 @@ export default {
       this.Light = dataFromDevice.Light;
       this.Led = dataFromDevice.LED_SW;
       this.Beep = dataFromDevice.BEEP_SW;
-      this.$store.commit("SetDeviceTempData", this.Temp);
-      this.$store.commit("SetDeviceHumData", this.Hum);
-      this.$store.commit("SetCurrentTime", time);
-      // this.$store.commit("SetCurrentSec", sec);
-      // this.$store.commit("SetCurrentMin", min);
+      if (dataFromDevice.Temp && dataFromDevice.Hum) {
+        this.$store.commit("SetDeviceTempData", this.Temp);
+        this.$store.commit("SetDeviceHumData", this.Hum);
+        this.$store.commit("SetCurrentTime", time);
+      }
     });
   },
+  //页面下拉刷新钩子
   onPullDownRefresh() {
     this.refresh();
   },
