@@ -63,6 +63,9 @@ export default {
     devicetempdata() {
       this.updateData();
     },
+    devicehumdata() {
+      this.updateData();
+    },
   },
   methods: {
     //温度统计

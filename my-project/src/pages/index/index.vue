@@ -87,6 +87,7 @@ import { connect } from "mqtt/dist/mqtt.js";
 import { mapState } from "vuex";
 import Toast from "@vant/weapp/dist/toast/toast";
 const mqttUrl = "wxs://www.nash141.cloud:8084/mqtt";
+// const mqttUrl = "wx://www.nash141.cloud:8083/mqtt";
 export default {
   data() {
     return {
@@ -153,7 +154,7 @@ export default {
     //下拉页面刷新
     refresh() {
       Toast.loading({
-        duration: 500,
+        duration: 1000,
         forbidClick: true,
         message: "刷新中...",
         loadingType: "spinner",
