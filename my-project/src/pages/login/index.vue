@@ -53,13 +53,52 @@
         <span @click="forgetPassword">忘记密码</span>
       </div>
       <van-toast id="van-toast" />
-      <van-dialog id="van-dialog"> </van-dialog>
+      <van-dialog
+        use-slot
+        title="找回密码"
+        id="van-dialog"
+        transition="fade"
+        :show="isforget"
+        @confirm="forgetPassword"
+        show-cancel-button
+      >
+        <van-field
+          placeholder="请输入注册手机号"
+          label="手机号"
+          title-width="60px"
+          @change="onPasswordForget"
+          :value="inputForgetPassword"
+          type="number"
+        ></van-field>
+      </van-dialog>
+      <van-dialog
+        use-slot
+        title="重置密码"
+        id="van-dialog"
+        transition="fade"
+        :show="isreset"
+        show-cancel-button
+        @confirm="resetPassword"
+      >
+        <van-field
+          :placeholder="forgetusername"
+          label="用户名"
+          title-width="60px"
+          disabled
+        ></van-field>
+        <van-field
+          placeholder="请输入新密码"
+          label="新密码"
+          title-width="60px"
+          @change="onNewPassword"
+          type="password"
+        ></van-field>
+      </van-dialog>
     </div>
   </div>
 </template>
 <script>
 import Toast from "@vant/weapp/dist/toast/toast";
-import Dialog from "@vant/weapp/dist/dialog/dialog";
 export default {
   data() {
     return {
@@ -67,10 +106,15 @@ export default {
       inputUserName: "",
       inputPassword: "",
       inputPhoneNumber: "",
+      inputForgetPhoneNumber: "",
+      inputNewPassword: "",
+      forgetusername: "",
       UserNameWaring: false,
       passwordWaring: false,
       phoneNumberWaring: false,
       waring: "",
+      isreset: false,
+      isforget: false,
     };
   },
   methods: {
@@ -136,6 +180,15 @@ export default {
         }
       }
     },
+    //监听忘记密码时输入的手机号
+    onPasswordForget(e) {
+      this.inputForgetPhoneNumber = e.mp.detail;
+      // console.log(this.inputForgetPhoneNumber);
+    },
+    //监听新输入的密码
+    onNewPassword(e) {
+      this.inputNewPassword = e.mp.detail;
+    },
     //登录(注册)
     login(e) {
       if (this.waring) {
@@ -165,15 +218,13 @@ export default {
                 "content-Type": "application/x-www-form-urlencoded",
               },
               success(res) {
-                if (res.data.length === 0) {
+                console.log(res);
+                if (res.data.status === 0) {
                   setTimeout(() => {
                     Toast.fail("用户名或密码错误");
                     that.inputPassword = "";
                   }, 500);
-                } else if (
-                  res.data[0].username === that.inputUserName &&
-                  res.data[0].password === that.inputPassword
-                ) {
+                } else if (res.data.status === 1) {
                   Toast.success("登录成功");
                   setTimeout(() => {
                     wx.switchTab({
@@ -189,9 +240,9 @@ export default {
         } else {
           //注册
           if (
-            this.inputUserName.trim() == !"" &&
-            this.inputPassword.trim() == !"" &&
-            this.inputPhoneNumber.trim() == !""
+            this.inputUserName.trim() !== "" &&
+            this.inputPassword.trim() !== "" &&
+            this.inputPhoneNumber.trim() !== ""
           ) {
             Toast.loading({
               duration: 0, //持续展示Toast
@@ -219,7 +270,8 @@ export default {
                   }, 500);
                 } else {
                   setTimeout(() => {
-                    Toast.fail("注册失败");
+                    console.log(res);
+                    Toast.fail(res.data);
                     that.inputPassword = "";
                     that.inputUserName = "";
                     that.inputPhoneNumber = "";
@@ -237,30 +289,58 @@ export default {
     register(e) {
       this.inputUserName = "";
       this.inputPassword = "";
+      this.inputPhoneNumber = "";
       this.LoginPage = !this.LoginPage;
     },
     //忘记密码
     forgetPassword(e) {
-      console.log("wangjimima");
-      Dialog.confirm({
-        title: "忘记密码",
-        message: "弹窗内容",
-      })
-        .then(() => {
-          // on confirm
-          console.log("confirm");
-        })
-        .catch(() => {
-          // on cancel
-          console.log("cancel");
+      const that = this;
+      this.isforget = !this.isforget;
+      if (this.inputForgetPhoneNumber.trim() !== "") {
+        wx.request({
+          url: "http://203.195.212.95/findpassword.php",
+          methods: "POST",
+          data: {
+            phonenumber: this.inputForgetPhoneNumber,
+          },
+          success(res) {
+            console.log(res);
+            if (res.data.length !== 0) {
+              that.forgetusername = res.data[0].username;
+              that.isreset = !that.isreset;
+            } else {
+              Toast.fail("该手机号未注册");
+            }
+            that.inputForgetPassword = "";
+          },
         });
+      }
+    },
+    //重置密码
+    resetPassword(e) {
+      const that = this;
+      console.log(this.inputNewPassword);
+      console.log(this.inputForgetPhoneNumber);
+      wx.request({
+        url: `http://203.195.212.95/reset.php`,
+        methods: "POST",
+        data: {
+          password: this.inputNewPassword,
+          phonenumber: this.inputForgetPhoneNumber,
+        },
+        success(res) {
+          that.inputNewPassword = "";
+          that.inputForgetPhoneNumber = "";
+          Toast.success(res.data.message);
+        },
+      });
     },
   },
 };
 </script>
 
 
-<style lang="scss" scoped>
+<style lang="scss">
 .header {
   height: 100px;
   padding: 25px 0px;
@@ -296,5 +376,8 @@ export default {
     color: #9f9f9f;
     font-size: 14px;
   }
+}
+.van-toast--icon {
+  width: unset !important;
 }
 </style>
