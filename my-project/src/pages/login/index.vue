@@ -106,8 +106,8 @@ export default {
       inputUserName: "",
       inputPassword: "",
       inputPhoneNumber: "",
-      inputForgetPhoneNumber: "",
-      inputNewPassword: "",
+      inputForgetPhoneNumber: "", //忘记密码输入的手机号
+      inputNewPassword: "", //忘记密码输入的新密码
       forgetusername: "",
       UserNameWaring: false,
       passwordWaring: false,
@@ -296,6 +296,13 @@ export default {
     forgetPassword(e) {
       const that = this;
       this.isforget = !this.isforget;
+      Toast.loading({
+        message: "验证中...",
+        duration: 0,
+        loadingType: "circular",
+        transition: "van-fade",
+        overlay: true,
+      });
       if (this.inputForgetPhoneNumber.trim() !== "") {
         wx.request({
           url: "http://203.195.212.95/findpassword.php",
@@ -304,10 +311,12 @@ export default {
             phonenumber: this.inputForgetPhoneNumber,
           },
           success(res) {
-            console.log(res);
+            setTimeout(() => {
+              Toast.clear();
+              that.isreset = !that.isreset;
+            }, 500);
             if (res.data.length !== 0) {
               that.forgetusername = res.data[0].username;
-              that.isreset = !that.isreset;
             } else {
               Toast.fail("该手机号未注册");
             }
@@ -319,8 +328,6 @@ export default {
     //重置密码
     resetPassword(e) {
       const that = this;
-      console.log(this.inputNewPassword);
-      console.log(this.inputForgetPhoneNumber);
       wx.request({
         url: `http://203.195.212.95/reset.php`,
         methods: "POST",
