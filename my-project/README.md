@@ -50,7 +50,7 @@ sass-loader安装版本过高
 npm uninstall sass-loader
 npm install sass-loader@7.3.1
 4. 无法连接至mqtt服务器
-mqtt模块新版本有问题需将至3.0.0 connect引入路径有问题
+mqtt模块新版本有问题需将至3.0.0 connect引入路径有问题 4.1.0版本可以使用
 npm install mqtt@3.0.0 --save
 import { connect } from "mqtt/dist/mqtt.js";
 5. 接收到的订阅消息是十六进制的
