@@ -129,9 +129,13 @@ export default {
           this.inputUserName.trim() !== ""
         ) {
           this.UserNameWaring = true;
-          this.waring = "用户名格式有误,6-18位，字母或数字";
+          this.phoneNumberWaring = false;
+          this.passwordWaring = false;
+          this.waring = "用户名格式有误,6-18位，字母或数字下划线";
         } else if (this.inputUserName.trim() == "") {
           this.UserNameWaring = true;
+          this.phoneNumberWaring = false;
+          this.passwordWaring = false;
           this.waring = "用户名不得为空";
         } else {
           this.waring = "";
@@ -144,16 +148,20 @@ export default {
       this.inputPassword = e.mp.detail;
       // console.log(this.inputPassword);
       if (!this.LoginPage) {
-        const regx = /^[0-9a-zA-Z]{6,18}$/;
+        const regx = /^[0-9a-zA-Z@_?]{6,18}$/;
         if (
           !regx.test(this.inputPassword) &&
           this.inputPassword.trim() !== ""
         ) {
           this.passwordWaring = true;
-          this.waring = "密码格式有误,6-18位，字母或数字";
+          this.waring = "密码格式有误,6-18位，字母或数字下划线";
+          this.UserNameWaring = false;
+          this.phoneNumberWaring = false;
         } else if (this.inputPassword.trim() == "") {
           this.passwordWaring = true;
           this.waring = "密码不得为空";
+          this.UserNameWaring = false;
+          this.phoneNumberWaring = false;
         } else {
           this.waring = "";
           this.passwordWaring = false;
@@ -171,9 +179,14 @@ export default {
           this.inputPhoneNumber.trim() !== ""
         ) {
           this.phoneNumberWaring = true;
+          this.passwordWaring = false;
+          this.UserNameWaring = false;
           this.waring = "手机号格式有误";
         } else if (this.inputPhoneNumber.trim() == "") {
+          this.phoneNumberWaring = true;
           this.waring = "手机号不得为空";
+          this.passwordWaring = false;
+          this.UserNameWaring = false;
         } else {
           this.waring = "";
           this.phoneNumberWaring = false;

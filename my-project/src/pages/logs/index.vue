@@ -268,8 +268,11 @@ export default {
     margin: 0 auto;
     height: 300px;
     .analysis {
-      text-align: center;
-      margin-bottom: 75px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+      margin-bottom: 30px;
     }
   }
 }
