@@ -1,21 +1,21 @@
 #include "led.h"
 #include "delay.h"
 #include "sys.h"
-//ALIENTEK miniSTM32¿ª·¢°åÊµÑé1
-//ÅÜÂíµÆÊµÑé  
-//¼¼ÊõÖ§³Ö£ºwww.openedv.com
-//¹ãÖÝÊÐÐÇÒíµç×Ó¿Æ¼¼ÓÐÏÞ¹«Ë¾
+//ALIENTEK miniSTM32ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½1
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½  
+//ï¿½ï¿½ï¿½ï¿½Ö§ï¿½Ö£ï¿½www.openedv.com
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Æ¼ï¿½ï¿½ï¿½ï¿½Þ¹ï¿½Ë¾
  int main(void)
  {	
-	delay_init();	    	 //ÑÓÊ±º¯Êý³õÊ¼»¯	  
-	LED_Init();		  	//³õÊ¼»¯ÓëLEDÁ¬½ÓµÄÓ²¼þ½Ó¿Ú
+	delay_init();	    	 //ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½	  
+	LED_Init();		  	//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½LEDï¿½ï¿½ï¿½Óµï¿½Ó²ï¿½ï¿½ï¿½Ó¿ï¿½
 	while(1)
 	{
-		GPIO_ResetBits(GPIOA,GPIO_Pin_8); //LED0Êä³öµÍ
-		GPIO_SetBits(GPIOD,GPIO_Pin_2);//LED1Êä³ö¸ß
+		GPIO_ResetBits(GPIOA,GPIO_Pin_4); //LED0ï¿½ï¿½ï¿½ï¿½ï¿½
+		GPIO_SetBits(GPIOC,GPIO_Pin_13);//LED1ï¿½ï¿½ï¿½ï¿½ï¿½
 		delay_ms(300);
-		GPIO_SetBits(GPIOA,GPIO_Pin_8);//LED0Êä³ö¸ß
-		GPIO_ResetBits(GPIOD,GPIO_Pin_2);//LED1Êä³öµÍ
+		GPIO_SetBits(GPIOA,GPIO_Pin_4);//LED0ï¿½ï¿½ï¿½ï¿½ï¿½
+		GPIO_ResetBits(GPIOC,GPIO_Pin_13);//LED1ï¿½ï¿½ï¿½ï¿½ï¿½
 		delay_ms(300);
 	}
  }
