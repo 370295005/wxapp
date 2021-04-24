@@ -5,30 +5,30 @@
 #include "usart.h"
 #include "bh1750.h"
 
-u8 humidityH; //Êª¶ÈÕûÊý²¿·Ö
-u8 humidityL; //Êª¶ÈÐ¡Êý²¿·Ö
-u8 temperatureH;//ÎÂ¶ÈÕûÊý
-u8 temperatureL;//ÎÂ¶ÈÐ¡Êý
-float Light=0; //¹âÕÕ¶È
+u8 humidityH; //Êªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+u8 humidityL; //Êªï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+u8 temperatureH;//ï¿½Â¶ï¿½ï¿½ï¿½ï¿½ï¿½
+u8 temperatureL;//ï¿½Â¶ï¿½Ð¡ï¿½ï¿½
+float Light=0; //ï¿½ï¿½ï¿½Õ¶ï¿½
 
 
  int main(void)
  {	
-	delay_init();	    	 //ÑÓÊ±º¯Êý³õÊ¼»¯	  
-	LED_Init();		  	//³õÊ¼»¯ÓëLEDÁ¬½ÓµÄÓ²¼þ½Ó¿Ú
-	DHT11_Init();      //³õÊ¼»¯ÎÂÊª¶È
-	BH1750_Init();			//³õÊ¼»¯¹âÕÕ
-	Usart1_Init(115200); //³õÊ¼»¯´®¿Ú
+	delay_init();	    	 //ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½	  
+	LED_Init();		  	//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½LEDï¿½ï¿½ï¿½Óµï¿½Ó²ï¿½ï¿½ï¿½Ó¿ï¿½
+	DHT11_Init();      //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Êªï¿½ï¿½
+	BH1750_Init();			//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	Usart1_Init(115200); //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	while(1)
 	{
-		//ÎÂÊª¶È¶ÁÈ¡Êý¾Ý
+		//ï¿½ï¿½Êªï¿½È¶ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 		DHT11_Read_Data(&humidityH,&humidityL,&temperatureH,&temperatureL);
-		//ÎÂÊª¶ÈÊä³öµ½´®¿Ú
-		UsartPrintf(USART_DEBUG,"Êª¶È:%d.%d % ÎÂ¶È:%d.%d ¡ãC ",humidityH,humidityL,temperatureH,temperatureL);
+		//ï¿½ï¿½Êªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		UsartPrintf(USART_DEBUG,"Êªï¿½ï¿½:%d.%d % ï¿½Â¶ï¿½:%d.%d ï¿½ï¿½C ",humidityH,humidityL,temperatureH,temperatureL);
 		
 		if(!i2c_CheckDevice(BH1750_Addr)){
 			Light = LIght_Intensity();
-			UsartPrintf(USART_DEBUG,"¹âÕÕ¶È:%1.f lx\r\n",Light);
+			UsartPrintf(USART_DEBUG,"ï¿½ï¿½ï¿½Õ¶ï¿½:%1.f lx\r\n",Light);
 		}
 		
 		
