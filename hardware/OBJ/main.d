@@ -33,4 +33,8 @@
 ..\obj\main.o: ..\SYSTEM\delay\delay.h
 ..\obj\main.o: ..\HARDWARE\DHT11\dht11.h
 ..\obj\main.o: ..\SYSTEM\usart\usart.h
+..\obj\main.o: F:\keil\ARM\ARMCC\Bin\..\include\stdio.h
 ..\obj\main.o: ..\HARDWARE\BH1750\bh1750.h
+..\obj\main.o: ..\HARDWARE\OLED\oled.h
+..\obj\main.o: F:\keil\ARM\ARMCC\Bin\..\include\stdlib.h
+..\obj\main.o: ..\SYSTEM\TIMER\timer.h
