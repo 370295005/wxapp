@@ -34,9 +34,7 @@ npm build:my
 npm run build --report
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
-
-## error and solution
+## QA
 
 ```
 1. TypeError: Cannot read property 'call' of undefined
@@ -76,5 +74,6 @@ x轴data不得为空
 16. 安卓真机调试无法连接至mqtt服务器
 安卓真机调试的问题，端口号会被当做把host中的一部分，即8080 和 443 端口外其他端口都不能访问
 17. PHP中文返回值会乱码
+18. 部分情况下会收到两条一模一样的数据
 ```
 

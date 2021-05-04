@@ -88,7 +88,7 @@ u8 DHT11_Read_Data(u8 *humiH,u8 *humiL,u8 *tempH,u8 *tempL)
 		}
 		if((buf[0]+buf[1]+buf[2]+buf[3])==buf[4])
 		{
-			*humiH=buf[0];			//坑啊原子哥，说明书明明是湿度在前温度在后
+			*humiH=buf[0];			
 			*humiL=buf[1];			
 			*tempH=buf[2];
 			*tempL=buf[3];

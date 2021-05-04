@@ -34,3 +34,4 @@
 ..\obj\timer.o: ..\HARDWARE\OLED\oled.h
 ..\obj\timer.o: F:\keil\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\timer.o: F:\keil\ARM\ARMCC\Bin\..\include\stdio.h
+..\obj\timer.o: ..\HARDWARE\BEEP\beep.h
