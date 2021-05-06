@@ -83,128 +83,128 @@
 </template>
 
 <script>
-import { connect } from "mqtt/dist/mqtt.js";
-import { mapState } from "vuex";
-import Toast from "@vant/weapp/dist/toast/toast";
-const mqttUrl = "wxs://www.nash141.cloud:8084/mqtt";
+import { connect } from 'mqtt/dist/mqtt.js'
+import { mapState } from 'vuex'
+import Toast from '@vant/weapp/dist/toast/toast'
+const mqttUrl = 'wxs://www.nash141.cloud:8084/mqtt'
 // const mqttUrl = "wx://www.nash141.cloud:8083/mqtt";
 export default {
-  data() {
+  data () {
     return {
-      client: {}, //连接对象
-      Temp: 0, //温度
-      Hum: 0, //湿度
-      Light: 0, //光照度
-      Led: 0, //led是否开启
-      Beep: 0, //蜂鸣器是否开启
-    };
+      client: {}, // 连接对象
+      Temp: 0, // 温度
+      Hum: 0, // 湿度
+      Light: 0, // 光照度
+      Led: 0, // led是否开启
+      Beep: 0 // 蜂鸣器是否开启
+    }
   },
   computed: {
     ...mapState({
       datalist: (state) => state.datalist,
-      loading: (state) => state.loading,
-    }),
+      loading: (state) => state.loading
+    })
   },
   methods: {
-    //监听led灯
-    onLedChange(e) {
-      //开关当前取值
-      let sw = e.mp.detail.value;
+    // 监听led灯
+    onLedChange (e) {
+      // 开关当前取值
+      let sw = e.mp.detail.value
       if (sw) {
-        //开灯
-        this.client.publish("/smart/sub", '{"LED_SW":1}', (err) => {
+        // 开灯
+        this.client.publish('/smart/sub', '{"LED_SW":1}', (err) => {
           if (err) {
-            console.log(err);
+            console.log(err)
           }
-        });
+        })
       } else {
-        //关灯
-        this.client.publish("/smart/sub", '{"LED_SW":0}', (err) => {
+        // 关灯
+        this.client.publish('/smart/sub', '{"LED_SW":0}', (err) => {
           if (err) {
-            console.log(err);
+            console.log(err)
           }
-        });
+        })
       }
     },
-    //监听蜂鸣器
-    onBeepChange(e) {
-      let sw = e.mp.detail.value;
+    // 监听蜂鸣器
+    onBeepChange (e) {
+      let sw = e.mp.detail.value
       if (sw) {
-        //打开报警器
-        this.client.publish("/smart/sub", '{"BEEP_SW":1}', (err) => {
+        // 打开报警器
+        this.client.publish('/smart/sub', '{"BEEP_SW":1}', (err) => {
           if (err) {
-            console.log(err);
+            console.log(err)
           }
-        });
+        })
       } else {
-        //关闭报警器
-        this.client.publish("/smart/sub", '{"BEEP_SW":0}', (err) => {
+        // 关闭报警器
+        this.client.publish('/smart/sub', '{"BEEP_SW":0}', (err) => {
           if (err) {
-            console.log(err);
+            console.log(err)
           }
-        });
+        })
       }
     },
-    //获取数据
-    getData() {
-      if (this.$store.state.datalist.city === "") {
-        this.$store.dispatch("getData");
+    // 获取数据
+    getData () {
+      if (this.$store.state.datalist.city === '') {
+        this.$store.dispatch('getData')
       }
     },
-    //下拉页面刷新
-    refresh() {
+    // 下拉页面刷新
+    refresh () {
       Toast.loading({
         duration: 1000,
         forbidClick: true,
-        message: "刷新中...",
-        loadingType: "spinner",
-      });
+        message: '刷新中...',
+        loadingType: 'spinner'
+      })
       if (wx.startPullDownRefresh) {
-        this.$store.dispatch("getData");
-        wx.stopPullDownRefresh();
+        this.$store.dispatch('getData')
+        wx.stopPullDownRefresh()
       }
-    },
+    }
   },
-  //页面加载钩子
-  onLoad() {
-    //连接mqqt伺服器
-    this.client = connect(mqttUrl);
-    this.client.on("connect", () => {
-      this.client.subscribe("/smart/sub", (err) => {
+  // 页面加载钩子
+  onLoad () {
+    // 连接mqqt伺服器
+    this.client = connect(mqttUrl)
+    this.client.on('connect', () => {
+      this.client.subscribe('/smart/sub', (err) => {
         if (err) {
-          console.log(err);
+          console.log(err)
         }
-      });
-    });
-    this.getData();
+      })
+    })
+    this.getData()
   },
-  //页面展示钩子
-  onShow() {
-    //订阅信息
-    this.client.on("message", (topic, message) => {
-      let date = new Date();
-      let sec = date.getSeconds();
-      let min = date.getMinutes();
-      let time = min + "分" + sec + "秒";
-      let dataFromDevice = JSON.parse(message);
-      console.log(dataFromDevice);
-      this.Temp = dataFromDevice.Temp;
-      this.Hum = dataFromDevice.Hum;
-      this.Light = dataFromDevice.Light;
-      this.Led = dataFromDevice.LED_SW;
-      this.Beep = dataFromDevice.BEEP_SW;
+  // 页面展示钩子
+  onShow () {
+    // 订阅信息
+    this.client.on('message', (topic, message) => {
+      let date = new Date()
+      let sec = date.getSeconds()
+      let min = date.getMinutes()
+      let time = min + '分' + sec + '秒'
+      let dataFromDevice = JSON.parse(message)
+      console.log(dataFromDevice)
+      this.Temp = dataFromDevice.Temp
+      this.Hum = dataFromDevice.Hum
+      this.Light = dataFromDevice.Light
+      this.Led = dataFromDevice.LED_SW
+      this.Beep = dataFromDevice.BEEP_SW
       if (dataFromDevice.Temp && dataFromDevice.Hum) {
-        this.$store.commit("SetDeviceTempData", this.Temp);
-        this.$store.commit("SetDeviceHumData", this.Hum);
-        this.$store.commit("SetCurrentTime", time);
+        this.$store.commit('SetDeviceTempData', this.Temp)
+        this.$store.commit('SetDeviceHumData', this.Hum)
+        this.$store.commit('SetCurrentTime', time)
       }
-    });
+    })
   },
-  //页面下拉刷新钩子
-  onPullDownRefresh() {
-    this.refresh();
-  },
-};
+  // 页面下拉刷新钩子
+  onPullDownRefresh () {
+    this.refresh()
+  }
+}
 </script>
 
 <style lang="scss" scoped>
