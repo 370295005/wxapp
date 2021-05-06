@@ -22,7 +22,7 @@ float Light=0; //光照
 u8 LED_STATUS = 0;
 char PUB_BUF[256];
 const char *SubTopics[] = {"/smart/sub"};
-const char PubTopic[] = "/smart/sub";
+const char PubTopic[] = "/smart/pub";
 
  int main(void)
  {	

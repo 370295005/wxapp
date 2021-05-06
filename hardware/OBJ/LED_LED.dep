@@ -1,6 +1,6 @@
 Dependencies for Project 'LED', Target 'LED': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (.\main.c)(0x6090F262)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\HARDWARE\LED -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\USER -I ..\STM32F10x_FWLib\inc -I ..\CORE -I ..\HARDWARE\BEEP -I ..\HARDWARE\BH1750 -I ..\HARDWARE\DHT11 -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\SYSTEM\TIMER -I ..\SYSTEM\EXTI -I ..\NET\device -I ..\NET\MQTT -I ..\NET\onenet -I ..\NET\cJSON-IF:\keil\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="534" -DSTM32F10X_MD -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
+F (.\main.c)(0x6093E14D)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\HARDWARE\LED -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\USER -I ..\STM32F10x_FWLib\inc -I ..\CORE -I ..\HARDWARE\BEEP -I ..\HARDWARE\BH1750 -I ..\HARDWARE\DHT11 -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\SYSTEM\TIMER -I ..\SYSTEM\EXTI -I ..\NET\device -I ..\NET\MQTT -I ..\NET\onenet -I ..\NET\cJSON-IF:\keil\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="534" -DSTM32F10X_MD -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
 I (..\HARDWARE\LED\led.h)(0x608431D1)
 I (..\SYSTEM\sys\sys.h)(0x550F951A)
 I (..\USER\stm32f10x.h)(0x4D783CB5)
@@ -682,7 +682,7 @@ I (..\NET\MQTT\Common.h)(0x59277EF5)
 I (F:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E3CC2)
 I (F:\keil\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
 I (F:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E3CC2)
-F (..\NET\onenet\onenet.c)(0x6090F897)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\HARDWARE\LED -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\USER -I ..\STM32F10x_FWLib\inc -I ..\CORE -I ..\HARDWARE\BEEP -I ..\HARDWARE\BH1750 -I ..\HARDWARE\DHT11 -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\SYSTEM\TIMER -I ..\SYSTEM\EXTI -I ..\NET\device -I ..\NET\MQTT -I ..\NET\onenet -I ..\NET\cJSON-IF:\keil\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="534" -DSTM32F10X_MD -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\onenet.o --omf_browse ..\obj\onenet.crf --depend ..\obj\onenet.d)
+F (..\NET\onenet\onenet.c)(0x6090F9C7)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\HARDWARE\LED -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\USER -I ..\STM32F10x_FWLib\inc -I ..\CORE -I ..\HARDWARE\BEEP -I ..\HARDWARE\BH1750 -I ..\HARDWARE\DHT11 -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\SYSTEM\TIMER -I ..\SYSTEM\EXTI -I ..\NET\device -I ..\NET\MQTT -I ..\NET\onenet -I ..\NET\cJSON-IF:\keil\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="534" -DSTM32F10X_MD -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\onenet.o --omf_browse ..\obj\onenet.crf --depend ..\obj\onenet.d)
 I (..\USER\stm32f10x.h)(0x4D783CB5)
 I (..\CORE\core_cm3.h)(0x4D523B58)
 I (F:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
