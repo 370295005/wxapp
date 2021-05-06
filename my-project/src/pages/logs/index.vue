@@ -8,9 +8,9 @@
         canvasId="Temp"
       />
       <div class="analysis">
-        <div>最高湿度:{{ maxhum }}%</div>
-        <div>最低湿度:{{ minhum }}%</div>
-        <div>平均湿度:{{ avghum }}%</div>
+        <div>最高温度:{{ maxtemp }}°C</div>
+        <div>最低温度:{{ mintemp }}°C</div>
+        <div>平均温度:{{ avgtemp }}°C</div>
       </div>
       <mpvue-echarts
         :echarts="echarts"
@@ -19,9 +19,9 @@
         canvasId="Hum"
       />
       <div class="analysis">
-        <div>最高温度:{{ maxtemp }}°C</div>
-        <div>最低温度:{{ mintemp }}°C</div>
-        <div>平均温度:{{ avgtemp }}°C</div>
+        <div>最高湿度:{{ maxhum }}%</div>
+        <div>最低湿度:{{ minhum }}%</div>
+        <div>平均湿度:{{ avghum }}%</div>
       </div>
     </div>
   </div>
@@ -103,15 +103,16 @@ export default {
         },
         yAxis: [
           {
-            type: 'value',
             splitLine: {
               lineStyle: {
                 type: 'dashed'
               }
             },
-            name: 'Temp',
-            nameLocation: 'end'
-          }
+            min:28,
+            max:32,
+            name: "Temp",
+            nameLocation: "end",
+          },
         ],
         // x轴可滑动
         dataZoom: [
@@ -179,9 +180,11 @@ export default {
                 type: 'dashed'
               }
             },
-            name: 'Hum',
-            nameLocation: 'end'
-          }
+            max:60,
+            min:50,
+            name: "Hum",
+            nameLocation: "end",
+          },
         ],
         // x轴可滑动
         dataZoom: [

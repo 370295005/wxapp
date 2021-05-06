@@ -14,7 +14,6 @@
 //////////////////////////////////////////////////////////////////////////////////	 
  	    
 //按键初始化函数 
-//PA15和PC5 设置成输入
 void KEY_Init(void)
 {
 	
@@ -38,8 +37,7 @@ void KEY_Init(void)
 //0，没有任何按键按下
 //KEY0_PRES，KEY0按下
 //KEY1_PRES，KEY1按下
-//WKUP_PRES，WK_UP按下 
-//注意此函数有响应优先级,KEY0>KEY1>WK_UP!!
+//注意此函数有响应优先级,KEY0>KEY1
 u8 KEY_Scan(u8 mode)
 {	 
 	static u8 key_up=1;//按键按松开标志

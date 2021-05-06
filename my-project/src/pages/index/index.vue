@@ -83,10 +83,10 @@
 </template>
 
 <script>
-import { connect } from 'mqtt/dist/mqtt.js'
-import { mapState } from 'vuex'
-import Toast from '@vant/weapp/dist/toast/toast'
-const mqttUrl = 'wxs://www.nash141.cloud:8084/mqtt'
+import { connect } from "mqtt/dist/mqtt.js";
+import { mapState } from "vuex";
+import Toast from "@vant/weapp/dist/toast/toast";
+const mqttUrl = "wxs://203.195.212.95:8084/mqtt";
 // const mqttUrl = "wx://www.nash141.cloud:8083/mqtt";
 export default {
   data () {
@@ -111,15 +111,15 @@ export default {
       // 开关当前取值
       let sw = e.mp.detail.value
       if (sw) {
-        // 开灯
-        this.client.publish('/smart/sub', '{"LED_SW":1}', (err) => {
+        //开灯
+        this.client.publish("/smart/sub", '{"target":"LED","value":1}', (err) => {
           if (err) {
             console.log(err)
           }
         })
       } else {
-        // 关灯
-        this.client.publish('/smart/sub', '{"LED_SW":0}', (err) => {
+        //关灯
+        this.client.publish("/smart/sub", '{"target":"LED","value":0}', (err) => {
           if (err) {
             console.log(err)
           }
@@ -130,15 +130,15 @@ export default {
     onBeepChange (e) {
       let sw = e.mp.detail.value
       if (sw) {
-        // 打开报警器
-        this.client.publish('/smart/sub', '{"BEEP_SW":1}', (err) => {
+        //打开报警器
+        this.client.publish("/smart/sub", '{"target":"BEEP","value":1}', (err) => {
           if (err) {
             console.log(err)
           }
         })
       } else {
-        // 关闭报警器
-        this.client.publish('/smart/sub', '{"BEEP_SW":0}', (err) => {
+        //关闭报警器
+        this.client.publish("/smart/sub", '{"target":"BEEP","value":0}', (err) => {
           if (err) {
             console.log(err)
           }
@@ -165,12 +165,12 @@ export default {
       }
     }
   },
-  // 页面加载钩子
-  onLoad () {
-    // 连接mqqt伺服器
-    this.client = connect(mqttUrl)
-    this.client.on('connect', () => {
-      this.client.subscribe('/smart/sub', (err) => {
+  //页面加载钩子
+  onLoad() {
+    //连接mqqt伺服器
+    this.client = connect(mqttUrl);
+    this.client.on("connect", () => {
+      this.client.subscribe("/smart/pub", (err) => {
         if (err) {
           console.log(err)
         }
@@ -178,21 +178,21 @@ export default {
     })
     this.getData()
   },
-  // 页面展示钩子
-  onShow () {
-    // 订阅信息
-    this.client.on('message', (topic, message) => {
-      let date = new Date()
-      let sec = date.getSeconds()
-      let min = date.getMinutes()
-      let time = min + '分' + sec + '秒'
-      let dataFromDevice = JSON.parse(message)
-      console.log(dataFromDevice)
-      this.Temp = dataFromDevice.Temp
-      this.Hum = dataFromDevice.Hum
-      this.Light = dataFromDevice.Light
-      this.Led = dataFromDevice.LED_SW
-      this.Beep = dataFromDevice.BEEP_SW
+  //页面展示钩子
+  onShow() {
+    //订阅信息
+    this.client.on("message", (topic, message) => {
+      let date = new Date();
+      let sec = date.getSeconds();
+      let min = date.getMinutes();
+      let time = min + "分" + sec + "秒";
+      let dataFromDevice = JSON.parse(message);
+      console.log(dataFromDevice);
+      this.Temp = dataFromDevice.Temp;
+      this.Hum = dataFromDevice.Hum;
+      this.Light = dataFromDevice.Light;
+      this.Led = dataFromDevice.Led;
+      this.Beep = dataFromDevice.Beep;
       if (dataFromDevice.Temp && dataFromDevice.Hum) {
         this.$store.commit('SetDeviceTempData', this.Temp)
         this.$store.commit('SetDeviceHumData', this.Hum)

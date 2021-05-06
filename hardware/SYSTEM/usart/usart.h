@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #ifndef _USART_H_
 #define _USART_H_
 
@@ -18,7 +17,7 @@ void Usart_SendString(USART_TypeDef *USARTx, unsigned char *str, unsigned short 
 void UsartPrintf(USART_TypeDef *USARTx, char *fmt,...);
 
 #endif
-=======
+
 #ifndef __USART_H
 #define __USART_H
 #include "stdio.h"	
@@ -55,4 +54,4 @@ extern u16 USART_RX_STA;         		//����״̬���
 //����봮���жϽ��գ��벻Ҫע�����º궨��
 void uart_init(u32 bound);
 #endif
->>>>>>> c1f7c7536ad95bfc1f8060e5cdd59253843bccff
+
