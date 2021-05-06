@@ -221,7 +221,7 @@ export default {
             })
             const that = this
             wx.request({
-              url: `http://203.195.212.95/login.php`,
+              url: `http://203.195.212.95/mysql/login.php`,
               method: 'POST',
               data: {
                 username: this.inputUserName,
@@ -239,6 +239,7 @@ export default {
                   }, 500)
                 } else if (res.data.status === 1) {
                   Toast.success('登录成功')
+                  that.$store.commit('SetCurrentUser',that.inputUserName);
                   setTimeout(() => {
                     wx.switchTab({
                       url: '/pages/index/main'
@@ -265,7 +266,7 @@ export default {
             })
             const that = this
             wx.request({
-              url: 'http://203.195.212.95/register.php',
+              url: 'http://203.195.212.95/mysql/register.php',
               method: 'POST',
               data: {
                 username: this.inputUserName,
@@ -318,7 +319,7 @@ export default {
       })
       if (this.inputForgetPhoneNumber.trim() !== '') {
         wx.request({
-          url: 'http://203.195.212.95/findpassword.php',
+          url: 'http://203.195.212.95/mysql/findpassword.php',
           methods: 'POST',
           data: {
             phonenumber: this.inputForgetPhoneNumber
@@ -342,7 +343,7 @@ export default {
     resetPassword (e) {
       const that = this
       wx.request({
-        url: `http://203.195.212.95/reset.php`,
+        url: `http://203.195.212.95/mysql/reset.php`,
         methods: 'POST',
         data: {
           password: this.inputNewPassword,

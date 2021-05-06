@@ -15,6 +15,12 @@ export default new Vuex.Store({
       weather: '', // 天气
       weatherAdvice: '' // 天气建议
     },
+    currentUser: {
+      username: 'Nash', // 当前用户名
+      admin: 1, // 是否是管理员
+      status: 1, // 是否启用
+      sex: 1 // 性别
+    },
     loading: true,
     devicetempdata: [],
     devicehumdata: [],
@@ -55,6 +61,9 @@ export default new Vuex.Store({
     // 设置骨架屏显示
     SetLoading (state, data) {
       state.loading = data
+    },
+    SetCurrentUser (state, username) {
+      state.currentUser.username = username
     }
   },
   actions: {

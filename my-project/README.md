@@ -1,6 +1,6 @@
 # my-project
 
-> final design
+> 毕业设计
 
 ## Build Setup
 

@@ -2,9 +2,10 @@
   "pages": [
     "pages/login/main",
     "pages/index/main",
-    "pages/logs/main"
+    "pages/logs/main",
+    "pages/manage/main"
   ],
-  "entryPagePath":"pages/index/main",
+  "entryPagePath":"pages/manage/main",
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -32,6 +33,11 @@
       "pagePath": "pages/logs/main",
       "iconPath": "static/tabs/data.png",
       "selectedIconPath": "static/tabs/data-active.png"
+    },{
+      "text": "管理",
+      "pagePath": "pages/manage/main",
+      "iconPath": "static/tabs/manage.png",
+      "selectedIconPath": "static/tabs/manage-active.png"
     }],
     "position": "bottom"
   },
