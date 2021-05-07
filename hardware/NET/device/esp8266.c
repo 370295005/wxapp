@@ -35,7 +35,7 @@
 //"AT+CWJAP=\"wifi名字\",\"密码\"\r\n"
 #define ESP8266_WIFI_INFO		"AT+CWJAP=\"HUAWEI\",\"12345678\"\r\n"
 //"AT+CIPSTART=\"TCP协议\",\"ip地址\",端口号\r\n"
-#define ESP8266_ONENET_INFO		"AT+CIPSTART=\"TCP\",\"203.195.212.95\",1883\r\n"
+#define ESP8266_ONENET_INFO		"AT+CIPSTART=\"TCP\",\"www.nash141.cloud\",1883\r\n"
 
 
 unsigned char esp8266_buf[128];

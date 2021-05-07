@@ -50,6 +50,8 @@
     "van-toast":"@vant/weapp/dist/toast/index",
     "van-dialog":"@vant/weapp/dist/dialog/index",
     "van-icon":"@vant/weapp/dist/icon/index",
-    "van-skeleton":"@vant/weapp/dist/skeleton/index"
+    "van-skeleton":"@vant/weapp/dist/skeleton/index",
+    "van-radio":"@vant/weapp/dist/radio/index",
+    "van-radio-group":"@vant/weapp/dist/radio-group/index"
   }
 }

@@ -86,7 +86,7 @@
 import { connect } from "mqtt/dist/mqtt.js";
 import { mapState } from "vuex";
 import Toast from "@vant/weapp/dist/toast/toast";
-const mqttUrl = "wxs://203.195.212.95:8084/mqtt";
+const mqttUrl = "wxs://www.nash141.cloud:8084/mqtt";
 // const mqttUrl = "wx://www.nash141.cloud:8083/mqtt";
 export default {
   data () {

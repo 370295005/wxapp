@@ -17,9 +17,9 @@ export default new Vuex.Store({
     },
     currentUser: {
       username: 'Nash', // 当前用户名
-      admin: 1, // 是否是管理员
-      status: 1, // 是否启用
-      sex: 1 // 性别
+      admin: '1', // 是否是管理员
+      status: '1', // 是否启用
+      sex: '1' // 性别
     },
     loading: true,
     devicetempdata: [],
@@ -62,8 +62,8 @@ export default new Vuex.Store({
     SetLoading (state, data) {
       state.loading = data
     },
-    SetCurrentUser (state, username) {
-      state.currentUser.username = username
+    SetCurrentUser (state, userinfo) {
+      state.currentUser = userinfo
     }
   },
   actions: {
