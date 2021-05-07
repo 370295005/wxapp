@@ -40,8 +40,8 @@
             :value="sex"
             @change="onSelectSex"
           >
-            <van-radio name="0">男</van-radio>
-            <van-radio name="1">女</van-radio>
+            <van-radio name="1">男</van-radio>
+            <van-radio name="0">女</van-radio>
           </van-radio-group>
         </div>
         <div class="waring" v-if="phoneNumberWaring && !LoginPage">
@@ -397,7 +397,6 @@ export default {
     font-size: 14px;
   }
 }
-
 .body {
   border-radius: 15px 15px 0px 0px;
   margin-top: -20px;

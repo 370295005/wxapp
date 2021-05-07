@@ -16,10 +16,11 @@ export default new Vuex.Store({
       weatherAdvice: '' // 天气建议
     },
     currentUser: {
-      username: 'Nash', // 当前用户名
-      admin: '1', // 是否是管理员
-      status: '1', // 是否启用
-      sex: '1' // 性别
+      username: '', // 当前用户名
+      admin: '', // 是否是管理员
+      status: '', // 是否启用
+      sex: '', // 性别
+      phonenumber: '' // 手机号
     },
     loading: true,
     devicetempdata: [],
