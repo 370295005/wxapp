@@ -22,6 +22,13 @@ export default new Vuex.Store({
       sex: '', // 性别
       phonenumber: '' // 手机号
     },
+    currentDevice: {
+      deviceid: '',
+      subtopic: '',
+      pubtopic: '',
+      master: '',
+      status: ''
+    },
     loading: true,
     devicetempdata: [],
     devicehumdata: [],
@@ -65,6 +72,9 @@ export default new Vuex.Store({
     },
     SetCurrentUser (state, userinfo) {
       state.currentUser = userinfo
+    },
+    SetCurrentDevice (state, deviceinfo) {
+      state.currentDevice = deviceinfo
     }
   },
   actions: {

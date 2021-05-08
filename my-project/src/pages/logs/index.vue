@@ -108,7 +108,7 @@ export default {
                 type: "dashed",
               },
             },
-            min:28,
+            min:22,
             max:32,
             name: "Temp",
             nameLocation: "end",

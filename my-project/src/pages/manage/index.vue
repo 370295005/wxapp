@@ -1,12 +1,12 @@
 <template>
   <div class="wrapper">
     <div class="header">
-      <div class="username" v-if="currentUserList.admin === '1'">
-        管理员:{{ currentUserList.username }}
+      <div class="username" v-if="currentUser.admin === '1'">
+        管理员:{{ currentUser.username }}
       </div>
-      <div class="username" v-else>{{ currentUserList.username }}</div>
+      <div class="username" v-else>{{ currentUser.username }}</div>
       <div class="icon-sex">
-        <img src="/static/images/boy.png" v-if="currentUserList.sex === '1'" /><img
+        <img src="/static/images/boy.png" v-if="currentUser.sex === '1'" /><img
           src="/static/images/girl.png"
           v-else
         />
@@ -312,7 +312,7 @@ export default {
               height: 30px;
               line-height: 30px;
               color: #ffffff;
-              font-size: 12px;
+              font-size: 10px;
             }
             .enable {
               background-color: #398439;

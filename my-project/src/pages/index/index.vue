@@ -26,14 +26,16 @@
             />
             <div class="data-text">
               <div class="data-title">温度</div>
-              <div class="data-value">{{ Temp }}°C</div>
+              <div class="data-value" v-show="Status">{{ Temp }}°C</div>
+              <div class="data-value" v-show="!Status">已停用</div>
             </div>
           </div>
           <div class="data">
             <img class="data-logo" src="/static/images/humidity.png" alt="" />
             <div class="data-text">
               <div class="data-title">湿度</div>
-              <div class="data-value">{{ Hum }}%</div>
+              <div class="data-value" v-show="Status">{{ Hum }}%</div>
+              <div class="data-value" v-show="!Status">已停用</div>
             </div>
           </div>
         </div>
@@ -46,7 +48,8 @@
             />
             <div class="data-text">
               <div class="data-title">光照</div>
-              <div class="data-value">{{ Light }}Lx</div>
+              <div class="data-value" v-show="Status">{{ Light }}Lx</div>
+              <div class="data-value" v-show="!Status">已停用</div>
             </div>
           </div>
           <div class="data">
@@ -56,6 +59,7 @@
               <switch
                 @change="onLedChange"
                 :checked="Led"
+                :disabled="!Status"
                 class="wx-switch-input"
                 color="#3d7ef9"
               />
@@ -70,6 +74,19 @@
               <switch
                 @change="onBeepChange"
                 :checked="Beep"
+                :disabled="!Status"
+                class="wx-switch-input"
+                color="#3d7ef9"
+              />
+            </div>
+          </div>
+          <div class="data">
+            <img class="data-logo" src="/static/images/device.png" alt="" />
+            <div class="data-text">
+              <div class="data-title">状态</div>
+              <switch
+                @change="onStatusChange"
+                :checked="Status"
                 class="wx-switch-input"
                 color="#3d7ef9"
               />
@@ -89,94 +106,181 @@ import Toast from "@vant/weapp/dist/toast/toast";
 const mqttUrl = "wxs://www.nash141.cloud:8084/mqtt";
 // const mqttUrl = "wx://www.nash141.cloud:8083/mqtt";
 export default {
-  data () {
+  data() {
     return {
       client: {}, // 连接对象
       Temp: 0, // 温度
       Hum: 0, // 湿度
       Light: 0, // 光照度
       Led: 0, // led是否开启
-      Beep: 0 // 蜂鸣器是否开启
-    }
+      Beep: 0, // 蜂鸣器是否开启
+      Status: true, //设备是否启用
+    };
   },
   computed: {
     ...mapState({
       datalist: (state) => state.datalist,
-      loading: (state) => state.loading
-    })
+      loading: (state) => state.loading,
+      currentDevice: (state) => state.currentDevice,
+    }),
+  },
+  watch: {
+    //若设备状态发生变化
+    Status() {
+      wx.request({
+        url: "http://www.nash141.cloud/mysql/changedevicestatus.php",
+        method: "GET",
+        data: {
+          status: this.Status,
+          master: this.currentDevice.master,
+        },
+        success() {
+          Toast.success("修改成功");
+        },
+      });
+      //启用状态
+      if (this.Status == 1) {
+        this.client.on("connect", () => {
+          this.client.subscribe(
+            `
+          ${this.currentDevice.pubtopic}`,
+            (err) => {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
+        });
+      } else {
+        this.client.on("connect", () => {
+          this.client.unsubscribe(
+            `
+          ${this.currentDevice.pubtopic}`,
+            (err) => {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
+        });
+      }
+    },
   },
   methods: {
     // 监听led灯
-    onLedChange (e) {
+    onLedChange(e) {
       // 开关当前取值
-      let sw = e.mp.detail.value
+      let sw = e.mp.detail.value;
       if (sw) {
         //开灯
-        this.client.publish("/smart/sub", '{"target":"LED","value":1}', (err) => {
-          if (err) {
-            console.log(err)
+        this.client.publish(
+          `
+          ${this.currentDevice.subtopic}`,
+          '{"target":"LED","value":1}',
+          (err) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        })
+        );
       } else {
         //关灯
-        this.client.publish("/smart/sub", '{"target":"LED","value":0}', (err) => {
-          if (err) {
-            console.log(err)
+        this.client.publish(
+          `
+          ${this.currentDevice.subtopic}`,
+          '{"target":"LED","value":0}',
+          (err) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        })
+        );
       }
     },
     // 监听蜂鸣器
-    onBeepChange (e) {
-      let sw = e.mp.detail.value
+    onBeepChange(e) {
+      let sw = e.mp.detail.value;
       if (sw) {
         //打开报警器
-        this.client.publish("/smart/sub", '{"target":"BEEP","value":1}', (err) => {
-          if (err) {
-            console.log(err)
+        this.client.publish(
+          `
+          ${this.currentDevice.subtopic}`,
+          '{"target":"BEEP","value":1}',
+          (err) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        })
+        );
       } else {
         //关闭报警器
-        this.client.publish("/smart/sub", '{"target":"BEEP","value":0}', (err) => {
-          if (err) {
-            console.log(err)
+        this.client.publish(
+          `
+          ${this.currentDevice.subtopic}`,
+          '{"target":"BEEP","value":0}',
+          (err) => {
+            if (err) {
+              console.log(err);
+            }
           }
-        })
+        );
       }
     },
+    // 监听设备状态
+    onStatusChange(e) {
+      if (e.mp.detail.value) {
+        this.Status = 1;
+      } else {
+        this.Status = 0;
+      }
+      console.log(this.Status);
+    },
     // 获取数据
-    getData () {
-      if (this.$store.state.datalist.city === '') {
-        this.$store.dispatch('getData')
+    getData() {
+      if (this.$store.state.datalist.city === "") {
+        this.$store.dispatch("getData");
       }
     },
     // 下拉页面刷新
-    refresh () {
+    refresh() {
       Toast.loading({
         duration: 1000,
         forbidClick: true,
-        message: '刷新中...',
-        loadingType: 'spinner'
-      })
+        message: "刷新中...",
+        loadingType: "spinner",
+      });
       if (wx.startPullDownRefresh) {
-        this.$store.dispatch('getData')
-        wx.stopPullDownRefresh()
+        this.$store.dispatch("getData");
+        wx.stopPullDownRefresh();
       }
-    }
+    },
   },
   //页面加载钩子
   onLoad() {
+    console.log(this.currentDevice.pubtopic);
     //连接mqqt伺服器
     this.client = connect(mqttUrl);
     this.client.on("connect", () => {
-      this.client.subscribe("/smart/pub", (err) => {
-        if (err) {
-          console.log(err)
+      this.client.subscribe(
+        `${this.currentDevice.pubtopic}`,
+        (err) => {
+          if (err) {
+            console.log(err);
+          }
         }
-      })
-    })
-    this.getData()
+      );
+    });
+    // this.client.on("connect", () => {
+    //   this.client.subscribe(
+    //     '/234/pub',
+    //     (err) => {
+    //       if (err) {
+    //         console.log(err);
+    //       }
+    //     }
+    //   );
+    // });
+    this.getData();
   },
   //页面展示钩子
   onShow() {
@@ -194,17 +298,17 @@ export default {
       this.Led = dataFromDevice.Led;
       this.Beep = dataFromDevice.Beep;
       if (dataFromDevice.Temp && dataFromDevice.Hum) {
-        this.$store.commit('SetDeviceTempData', this.Temp)
-        this.$store.commit('SetDeviceHumData', this.Hum)
-        this.$store.commit('SetCurrentTime', time)
+        this.$store.commit("SetDeviceTempData", this.Temp);
+        this.$store.commit("SetDeviceHumData", this.Hum);
+        this.$store.commit("SetCurrentTime", time);
       }
-    })
+    });
   },
   // 页面下拉刷新钩子
-  onPullDownRefresh () {
-    this.refresh()
-  }
-}
+  onPullDownRefresh() {
+    this.refresh();
+  },
+};
 </script>
 
 <style lang="scss" scoped>

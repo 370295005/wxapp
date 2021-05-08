@@ -3,7 +3,8 @@
     "pages/login/main",
     "pages/index/main",
     "pages/logs/main",
-    "pages/manage/main"
+    "pages/manage/main",
+    "pages/relation/main"
   ],
   "entryPagePath":"pages/login/main",
   "window": {

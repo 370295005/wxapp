@@ -249,19 +249,28 @@ export default {
               },
               success(res) {
                 console.log(res);
-                if (res.data.status === 0) {
+                if (res.data.res === 0) {
                   setTimeout(() => {
                     Toast.fail("用户名或密码错误");
                     that.inputPassword = "";
                   }, 500);
-                } else if (res.data.status === 1) {
+                } else if (res.data.res === 1) {
                   Toast.success("登录成功");
                   that.$store.commit("SetCurrentUser", res.data.userinfo);
-                  setTimeout(() => {
-                    wx.switchTab({
-                      url: "/pages/index/main",
-                    });
-                  }, 500);
+                  that.$store.commit("SetCurrentDevice", res.data.deviceinfo);
+                  if (res.data.deviceinfo) {
+                    setTimeout(() => {
+                      wx.switchTab({
+                        url: "/pages/index/main",
+                      });
+                    }, 500);
+                  } else {
+                    setTimeout(() => {
+                      wx.navigateTo({
+                        url: "/pages/relation/main",
+                      });
+                    }, 500);
+                  }
                 }
               },
             });
@@ -298,7 +307,7 @@ export default {
                 "content-Type": "application/x-www-form-urlencoded",
               },
               success(res) {
-                if (res.data.status === 1) {
+                if (res.data.res === 1) {
                   setTimeout(() => {
                     Toast.success("注册成功");
                     that.LoginPage = true;
