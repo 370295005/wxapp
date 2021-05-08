@@ -94,6 +94,23 @@
           </div>
         </div>
       </div>
+      <div class="body-device">
+        <img src="/static/images/arguments.png" class="data-logo" />
+        <div class="device-arguments">
+          <div class="arguments">
+            <span>设备id</span>
+            <span>{{currentDevice.deviceid}}</span>
+          </div>
+          <div class="arguments">
+            <span>发布主题</span>
+            <span>{{currentDevice.subtopic}}</span>
+          </div>
+          <div class="arguments">
+            <span>订阅主题</span>
+            <span>{{currentDevice.pubtopic}}</span>
+          </div>
+        </div>
+      </div>
     </div>
     <van-toast id="van-toast" />
   </div>
@@ -315,7 +332,7 @@ export default {
     .data {
       background-color: #fff;
       width: 150px;
-      height: 80px;
+      height: 75px;
       border-radius: 20px;
       display: flex;
       justify-content: space-around;
@@ -330,7 +347,7 @@ export default {
         color: #7f7f7f;
         .wx-switch-input {
           //微信内置开关样式
-          transform: scale(0.8) !important;
+          transform: scale(0.9) !important;
         }
         .data-title {
           text-align: center;
@@ -339,6 +356,35 @@ export default {
         .data-value {
           font-size: 18px;
           font-weight: 600;
+        }
+      }
+    }
+  }
+  .body-device {
+    margin-top: 20px;
+    width: 100%;
+    height: 70px;
+    border-radius: 20px;
+    box-shadow: #d6d6d6 0px 0px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .data-logo {
+      height: 36px;
+      width: 36px;
+    }
+    .device-arguments {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      .arguments {
+        margin: 5px 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        span{
+          color: #a3a3a3;
         }
       }
     }
