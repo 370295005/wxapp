@@ -7,7 +7,7 @@
     <div class="body">
       <div class="login-form">
         <p>设备id</p>
-        <van-field placeholder="请输入设备id" @change="onInputDeviceId" />
+        <van-field placeholder="请输入设备id" @change="onInputDeviceId" :value="deviceid"/>
         <p>设备订阅地址</p>
         <van-field disabled="true" :value="deviceid + '/sub'" />
         <p>设备发布地址</p>
@@ -48,6 +48,7 @@ export default {
       this.deviceid = e.mp.detail;
     },
     relationdevice() {
+     const that = this;
       if (this.deviceid.trim() == "") {
         Toast.fail("请正确输入设备id");
       } else {
@@ -66,11 +67,15 @@ export default {
           success(res) {
             if (res.data.res == 1) {
               Toast.success("关联成功");
+              that.$store.commit("SetCurrentDevice", params);
               setTimeout(() => {
                 wx.switchTab({
                   url: "/pages/index/main",
                 });
-              },1000);
+              }, 1000);
+            } else {
+              Toast.fail("设备id已存在");
+              that.deviceid = "";
             }
           },
         });

@@ -256,20 +256,9 @@ export default {
     },
   },
   //页面加载钩子
-  onLoad() {
-    console.log(this.currentDevice.pubtopic);
+  created() {
     //连接mqqt伺服器
-    this.client = connect(mqttUrl);
-    this.client.on("connect", () => {
-      this.client.subscribe(
-        `${this.currentDevice.pubtopic}`,
-        (err) => {
-          if (err) {
-            console.log(err);
-          }
-        }
-      );
-    });
+
     // this.client.on("connect", () => {
     //   this.client.subscribe(
     //     '/234/pub',
@@ -283,7 +272,15 @@ export default {
     this.getData();
   },
   //页面展示钩子
-  onShow() {
+  mounted() {
+    this.client = connect(mqttUrl);
+    this.client.on("connect", () => {
+      this.client.subscribe(`${this.currentDevice.pubtopic}`, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    });
     //订阅信息
     this.client.on("message", (topic, message) => {
       let date = new Date();
