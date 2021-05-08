@@ -141,21 +141,17 @@ export default {
       //启用状态
       if (this.Status == 1) {
         console.log("订阅发布");
-        this.client.on("connect", () => {
-          this.client.subscribe(`${this.currentDevice.pubtopic}`, (err) => {
-            if (err) {
-              console.log(err);
-            }
-          });
+        this.client.subscribe(`${this.currentDevice.pubtopic}`, (err) => {
+          if (err) {
+            console.log(err);
+          }
         });
       } else {
         console.log("取消订阅发布");
-        this.client.on("connect", () => {
-          this.client.unsubscribe(`${this.currentDevice.pubtopic}`, (err) => {
-            if (err) {
-              console.log(err);
-            }
-          });
+        this.client.unsubscribe(`${this.currentDevice.pubtopic}`, (err) => {
+          if (err) {
+            console.log(err);
+          }
         });
       }
     },
@@ -246,23 +242,10 @@ export default {
       }
     },
   },
-  //页面加载钩子
   created() {
     //连接mqqt伺服器
-
-    // this.client.on("connect", () => {
-    //   this.client.subscribe(
-    //     '/234/pub',
-    //     (err) => {
-    //       if (err) {
-    //         console.log(err);
-    //       }
-    //     }
-    //   );
-    // });
     this.getData();
   },
-  //页面展示钩子
   mounted() {
     console.log(this.currentDevice);
     this.client = connect(mqttUrl);
