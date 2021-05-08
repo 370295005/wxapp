@@ -20,12 +20,13 @@
     "compileHotReLoad": false,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
-    "useApiHostProcess": true,
+    "useApiHostProcess": false,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
+    "enableEngineNative": false,
     "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": false,
@@ -42,7 +43,7 @@
   },
   "miniprogramRoot": "dist/wx/",
   "compileType": "miniprogram",
-  "appid": "wx0a65bddc152134c2",
+  "appid": "wxdc9955c41de97428",
   "projectname": "my-project",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},

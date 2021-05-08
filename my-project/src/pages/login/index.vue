@@ -412,7 +412,7 @@ export default {
   background-color: #fff;
   padding: 20px;
   .login-form {
-    margin-bottom: 20px;
+    margin: 40px 0px;
     .waring {
       padding: 10px 15px;
       color: red;
