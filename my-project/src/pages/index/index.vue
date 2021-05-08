@@ -140,28 +140,22 @@ export default {
       });
       //启用状态
       if (this.Status == 1) {
+        console.log("订阅发布");
         this.client.on("connect", () => {
-          this.client.subscribe(
-            `
-          ${this.currentDevice.pubtopic}`,
-            (err) => {
-              if (err) {
-                console.log(err);
-              }
+          this.client.subscribe(`${this.currentDevice.pubtopic}`, (err) => {
+            if (err) {
+              console.log(err);
             }
-          );
+          });
         });
       } else {
+        console.log("取消订阅发布");
         this.client.on("connect", () => {
-          this.client.unsubscribe(
-            `
-          ${this.currentDevice.pubtopic}`,
-            (err) => {
-              if (err) {
-                console.log(err);
-              }
+          this.client.unsubscribe(`${this.currentDevice.pubtopic}`, (err) => {
+            if (err) {
+              console.log(err);
             }
-          );
+          });
         });
       }
     },
@@ -171,11 +165,11 @@ export default {
     onLedChange(e) {
       // 开关当前取值
       let sw = e.mp.detail.value;
+      console.log(this.currentDevice);
       if (sw) {
         //开灯
         this.client.publish(
-          `
-          ${this.currentDevice.subtopic}`,
+          `${this.currentDevice.subtopic}`,
           '{"target":"LED","value":1}',
           (err) => {
             if (err) {
@@ -186,8 +180,7 @@ export default {
       } else {
         //关灯
         this.client.publish(
-          `
-          ${this.currentDevice.subtopic}`,
+          `${this.currentDevice.subtopic}`,
           '{"target":"LED","value":0}',
           (err) => {
             if (err) {
@@ -203,8 +196,7 @@ export default {
       if (sw) {
         //打开报警器
         this.client.publish(
-          `
-          ${this.currentDevice.subtopic}`,
+          `${this.currentDevice.subtopic}`,
           '{"target":"BEEP","value":1}',
           (err) => {
             if (err) {
@@ -215,8 +207,7 @@ export default {
       } else {
         //关闭报警器
         this.client.publish(
-          `
-          ${this.currentDevice.subtopic}`,
+          `${this.currentDevice.subtopic}`,
           '{"target":"BEEP","value":0}',
           (err) => {
             if (err) {
@@ -273,6 +264,7 @@ export default {
   },
   //页面展示钩子
   mounted() {
+    console.log(this.currentDevice);
     this.client = connect(mqttUrl);
     this.client.on("connect", () => {
       this.client.subscribe(`${this.currentDevice.pubtopic}`, (err) => {
