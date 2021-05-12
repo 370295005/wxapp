@@ -145,7 +145,7 @@ export default {
     //若设备状态发生变化
     Status() {
       wx.request({
-        url: "http://www.nash141.cloud/mysql/changedevicestatus.php",
+        url: "https://www.nash141.cloud/mysql/changedevicestatus.php",
         method: "GET",
         data: {
           status: this.Status,
