@@ -4,7 +4,7 @@
       <div class="username" v-if="currentUser.admin === '1'">
         管理员:{{ currentUser.username }}
       </div>
-      <div class="username" v-else>{{ currentUser.username }}</div>
+      <div class="username" v-else>{{ currentUserList.username }}</div>
       <div class="icon-sex">
         <img src="/static/images/boy.png" v-if="currentUser.sex === '1'" /><img
           src="/static/images/girl.png"
@@ -16,7 +16,7 @@
       <div class="userlist" v-if="currentUser.admin === '1'">
         <ul>
           <li v-for="(item, index) in userList" :key="index">
-            <p>{{ item[0] }}</p>
+            <p v-if="item[0] !== currentUser.username">{{ item[0] }}</p>
             <div class="btn-control" v-if="item[0] !== currentUser.username">
               <button
                 class="btn enable"
@@ -38,8 +38,8 @@
       <div class="userinfo" v-else>
         <ul>
           <li>
-            <span class="border-white">手机号</span>
-            <span>{{ currentUserList.phonenumber }}</span>
+            <span class="border-white">设备id</span>
+            <span>{{ currentDevice.deviceid }}</span>
           </li>
           <li>
             <span class="border-white">用户名</span>
@@ -111,6 +111,7 @@ export default {
   computed: {
     ...mapState({
       currentUser: (state) => state.currentUser,
+      currentDevice: (state) => state.currentDevice,
     }),
   },
   mounted() {
@@ -128,6 +129,7 @@ export default {
         this.getuser();
       }
     });
+    // console.log(this.currentUser);
   },
   methods: {
     //获取所有用户信息
@@ -152,7 +154,6 @@ export default {
         },
         success(res) {
           that.currentUserList = res.data;
-          console.log(that.currentUserList);
         },
       });
     },
@@ -160,10 +161,14 @@ export default {
     enable(username) {
       const that = this;
       wx.request({
-        url: "https://www.nash141.cloud/mysql/enableuser.php",
+        url: "https://www.nash141.cloud/mysql/operateuser.php",
         method: "GET",
         data: {
           username,
+          type: "enable",
+          adminid: that.currentUser.userid,
+          log: that.currentUser.userid + " " + "enable" + " " + username,
+          operateid: new Date().getTime().toString(14),
         },
         success() {
           Toast.success("启用成功");
@@ -175,10 +180,14 @@ export default {
     disable(username) {
       const that = this;
       wx.request({
-        url: "https://www.nash141.cloud/mysql/disableuser.php",
+        url: "https://www.nash141.cloud/mysql/operateuser.php",
         method: "GET",
         data: {
           username,
+          type: "disable",
+          adminid: that.currentUser.userid,
+          log: that.currentUser.userid + " " + "disable" + " " + username,
+          operateid: new Date().getTime().toString(14),
         },
         success() {
           Toast.success("禁用成功");
@@ -196,10 +205,14 @@ export default {
       })
         .then(() => {
           wx.request({
-            url: "https://www.nash141.cloud/mysql/removeuser.php",
+            url: "https://www.nash141.cloud/mysql/operateuser.php",
             method: "GET",
             data: {
               username,
+              type: "remove",
+              adminid: that.currentUser.userid,
+              log: that.currentUser.userid + " " + "remove" + " " + username,
+              operateid: new Date().getTime().toString(14),
             },
             success() {
               Toast.success("删除成功");
@@ -223,7 +236,11 @@ export default {
         phonenumber: this.currentUserList.phonenumber,
         sex: this.newsex,
       };
-      if (this.newusername !== "" && this.newpassword !== "" && this.newsex !== 3) {
+      if (
+        this.newusername !== "" &&
+        this.newpassword !== "" &&
+        this.newsex !== 3
+      ) {
         wx.request({
           url: `https://www.nash141.cloud/mysql/updateuserinfo.php`,
           methods: "POST",
@@ -376,6 +393,7 @@ export default {
   }
 }
 .van-toast--icon {
+  min-width: 100px;
   width: unset !important;
 }
 </style>

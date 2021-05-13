@@ -1,123 +1,135 @@
  /* eslint-disable */ 
 
 <template>
-  <div class="wrapper">
-    <div class="header-wrapper">
-      <van-skeleton :row="4" :loading="loading">
-        <div class="header-title">
-          <span>{{ "空气质量:" + datalist.airText }}</span>
-          <span>{{ datalist.city }} {{ datalist.area }}</span>
-        </div>
-        <div class="header-text">
-          <span>{{ datalist.airValue }}</span>
-          <span>{{ datalist.weather }}</span>
-        </div>
-        <div class="weather-advice">{{ datalist.weatherAdvice }}</div>
-      </van-skeleton>
-    </div>
-    <div class="body-wrapper">
-      <div class="body">
-        <div class="data-wrapper">
-          <div class="data">
-            <img
-              class="data-logo"
-              src="/static/images/temperature.png"
-              alt=""
-            />
-            <div class="data-text">
-              <div class="data-title">温度</div>
-              <div class="data-value" v-show="Status">{{ Temp }}°C</div>
-              <div class="data-value" v-show="!Status">已停用</div>
-            </div>
+  <div>
+    <!-- <van-notice-bar
+      mode="closeable"
+      background="#ff0000"
+      color="#ffffff"
+      :scrollable="false"
+      v-show="!mqttStatus"
+      text="MQTT连接失败!"
+    /> -->
+    <div class="wrapper">
+      <div class="header-wrapper">
+        <van-skeleton :row="4" :loading="loading">
+          <div class="header-title">
+            <span>{{ "空气质量:" + datalist.airText }}</span>
+            <span>{{ datalist.city }} {{ datalist.area }}</span>
           </div>
-          <div class="data">
-            <img class="data-logo" src="/static/images/humidity.png" alt="" />
-            <div class="data-text">
-              <div class="data-title">湿度</div>
-              <div class="data-value" v-show="Status">{{ Hum }}%</div>
-              <div class="data-value" v-show="!Status">已停用</div>
-            </div>
+          <div class="header-text">
+            <span>{{ datalist.airValue }}</span>
+            <span>{{ datalist.weather }}</span>
           </div>
-        </div>
-        <div class="data-wrapper">
-          <div class="data">
-            <img
-              class="data-logo"
-              src="/static/images/illumination.png"
-              alt=""
-            />
-            <div class="data-text">
-              <div class="data-title">光照</div>
-              <div class="data-value" v-show="Status">{{ Light }}Lx</div>
-              <div class="data-value" v-show="!Status">已停用</div>
-            </div>
-          </div>
-          <div class="data">
-            <img class="data-logo" src="/static/images/led.png" alt="" />
-            <div class="data-text">
-              <div class="data-title">客厅灯</div>
-              <switch
-                @change="onLedChange"
-                :checked="Led"
-                :disabled="!Status"
-                class="wx-switch-input"
-                color="#3d7ef9"
+          <div class="weather-advice">{{ datalist.weatherAdvice }}</div>
+        </van-skeleton>
+      </div>
+      <div class="body-wrapper">
+        <div class="body">
+          <div class="data-wrapper">
+            <div class="data">
+              <img
+                class="data-logo"
+                src="/static/images/temperature.png"
+                alt=""
               />
+              <div class="data-text">
+                <div class="data-title">温度</div>
+                <div class="data-value" v-show="Status">{{ Temp }}°C</div>
+                <div class="data-value" v-show="!Status">已停用</div>
+              </div>
+            </div>
+            <div class="data">
+              <img class="data-logo" src="/static/images/humidity.png" alt="" />
+              <div class="data-text">
+                <div class="data-title">湿度</div>
+                <div class="data-value" v-show="Status">{{ Hum }}%</div>
+                <div class="data-value" v-show="!Status">已停用</div>
+              </div>
+            </div>
+          </div>
+          <div class="data-wrapper">
+            <div class="data">
+              <img
+                class="data-logo"
+                src="/static/images/illumination.png"
+                alt=""
+              />
+              <div class="data-text">
+                <div class="data-title">光照</div>
+                <div class="data-value" v-show="Status">{{ Light }}Lx</div>
+                <div class="data-value" v-show="!Status">已停用</div>
+              </div>
+            </div>
+            <div class="data">
+              <img class="data-logo" src="/static/images/led.png" alt="" />
+              <div class="data-text">
+                <div class="data-title">客厅灯</div>
+                <switch
+                  @change="onLedChange"
+                  :checked="Led"
+                  :disabled="!Status"
+                  class="wx-switch-input"
+                  color="#3d7ef9"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="data-wrapper">
+            <div class="data">
+              <img class="data-logo" src="/static/images/beep.png" alt="" />
+              <div class="data-text">
+                <div class="data-title">报警器</div>
+                <switch
+                  @change="onBeepChange"
+                  :checked="Beep"
+                  :disabled="!Status"
+                  class="wx-switch-input"
+                  color="#3d7ef9"
+                />
+              </div>
+            </div>
+            <div class="data">
+              <img class="data-logo" src="/static/images/device.png" alt="" />
+              <div class="data-text">
+                <div class="data-title">状态</div>
+                <switch
+                  @change="onStatusChange"
+                  :checked="Status"
+                  class="wx-switch-input"
+                  color="#3d7ef9"
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div class="data-wrapper">
-          <div class="data">
-            <img class="data-logo" src="/static/images/beep.png" alt="" />
-            <div class="data-text">
-              <div class="data-title">报警器</div>
-              <switch
-                @change="onBeepChange"
-                :checked="Beep"
-                :disabled="!Status"
-                class="wx-switch-input"
-                color="#3d7ef9"
-              />
+        <div class="body-device">
+          <img src="/static/images/arguments.png" class="data-logo" />
+          <div class="device-arguments">
+            <div class="arguments">
+              <span>设备id</span>
+              <span>{{ currentDevice.deviceid }}</span>
             </div>
-          </div>
-          <div class="data">
-            <img class="data-logo" src="/static/images/device.png" alt="" />
-            <div class="data-text">
-              <div class="data-title">状态</div>
-              <switch
-                @change="onStatusChange"
-                :checked="Status"
-                class="wx-switch-input"
-                color="#3d7ef9"
-              />
+            <div class="arguments">
+              <span>发布主题</span>
+              <span>{{ currentDevice.subtopic }}</span>
+            </div>
+            <div class="arguments">
+              <span>订阅主题</span>
+              <span>{{ currentDevice.pubtopic }}</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="body-device">
-        <img src="/static/images/arguments.png" class="data-logo" />
-        <div class="device-arguments">
-          <div class="arguments">
-            <span>设备id</span>
-            <span>{{currentDevice.deviceid}}</span>
-          </div>
-          <div class="arguments">
-            <span>发布主题</span>
-            <span>{{currentDevice.subtopic}}</span>
-          </div>
-          <div class="arguments">
-            <span>订阅主题</span>
-            <span>{{currentDevice.pubtopic}}</span>
-          </div>
-        </div>
-      </div>
+      <van-toast id="van-toast" />
     </div>
-    <van-toast id="van-toast" />
   </div>
 </template>
 
 <script>
 import { connect } from "mqtt/dist/mqtt.js";
+// var mqtt = require('mqtt')
+// import { connect } from "mqtt";
 import { mapState } from "vuex";
 import Toast from "@vant/weapp/dist/toast/toast";
 const mqttUrl = "wxs://www.nash141.cloud:8084/mqtt";
@@ -132,6 +144,7 @@ export default {
       Led: 0, // led是否开启
       Beep: 0, // 蜂鸣器是否开启
       Status: true, //设备是否启用
+      mqttStatus: true,
     };
   },
   computed: {
@@ -178,7 +191,6 @@ export default {
     onLedChange(e) {
       // 开关当前取值
       let sw = e.mp.detail.value;
-      console.log(this.currentDevice);
       if (sw) {
         //开灯
         this.client.publish(
@@ -260,12 +272,12 @@ export default {
     },
   },
   created() {
-    //连接mqqt伺服器
     this.getData();
   },
   mounted() {
-    console.log(this.currentDevice);
+    //连接mqqt伺服器
     this.client = connect(mqttUrl);
+    // this.client = mqtt.connect(mqttUrl)
     this.client.on("connect", () => {
       this.client.subscribe(`${this.currentDevice.pubtopic}`, (err) => {
         if (err) {
@@ -383,7 +395,7 @@ export default {
         flex-direction: column;
         justify-content: space-around;
         align-items: center;
-        span{
+        span {
           color: #a3a3a3;
         }
       }

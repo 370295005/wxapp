@@ -2290,7 +2290,7 @@ void EXTIX_Init(void);//IO初始化
 #include "esp8266.h"	//	esp8266 wifi模块头文件
 #include "onenet.h"		//	onenet链接mqtt服务器
 u8 alarmFlag = 0;	//蜂鸣器标志位
-    u8 alarm_is_free = 10;	//报警器是否被手动操作，如果被手动操作即设置为0
+u8 alarm_is_free = 10;	//报警器是否被手动操作，如果被手动操作即设置为0
 u8 humidityH; 	//湿度整数
 u8 humidityL; 	//湿度小数
 u8 temperatureH;	//温度整数
@@ -2300,8 +2300,7 @@ u8 LED_STATUS = 0; 	//LED0当前状态
 char PUB_BUF[256]; 	//将要发布到mqtt服务器的数据，防止函数因参数过多报错
 const char *SubTopics[] = {"/smart/sub"}; //mqtt服务器订阅地址
 const char PubTopic[] = "/smart/pub"; //mqtt发布地址
-
- int main(void)
+int main(void)
  {	
 	unsigned short timeCount = 0; //发送间隔变量
 	unsigned char *dataPtr = NULL; //获取平台返回的数据
@@ -2325,11 +2324,9 @@ const char PubTopic[] = "/smart/pub"; //mqtt发布地址
 	ESP8266_Init();				//8266初始化
 	while(OneNet_DevLink())		//接入onenet
 		delay_ms(500);			//直到mqtt链接成功往下执行
-	
 	BEEP = 0;   //叫一下表示接入成功
 	delay_ms(250);
 	BEEP = 1;	//低电平触发，叫250ms后停止
-	
 	OneNet_Subscribe(SubTopics,1);	//订阅mqtt
 	while(1)
 	{

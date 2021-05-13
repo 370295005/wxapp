@@ -20,7 +20,8 @@ export default new Vuex.Store({
       admin: '', // 是否是管理员
       status: '', // 是否启用
       sex: '', // 性别
-      phonenumber: '' // 手机号
+      phonenumber: '', // 手机号
+      userid: '' // 用户id
     },
     currentDevice: {
       deviceid: '',

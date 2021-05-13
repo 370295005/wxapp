@@ -3,10 +3,12 @@
     <div class="header" v-if="LoginPage">
       <div class="header-title">请登录</div>
       <div class="header-info">Please Login</div>
+      <div class="header-info">永远相信美好的事情即将发生</div>
     </div>
     <div class="header" v-else>
       <div class="header-title">请注册</div>
       <div class="header-info">Please Register</div>
+      <div class="header-info">永远相信美好的事情即将发生</div>
     </div>
     <div class="body">
       <div class="login-form">
@@ -134,7 +136,7 @@ export default {
       this.inputUserName = e.mp.detail;
       // console.log(this.inputUserName);
       if (!this.LoginPage) {
-        const regx = /^[a-zA-Z0-9]{6,18}$/;
+        const regx = /^[a-zA-Z0-9_]{6,18}$/;
         if (
           !regx.test(this.inputUserName) &&
           this.inputUserName.trim() !== ""
@@ -159,7 +161,7 @@ export default {
       this.inputPassword = e.mp.detail;
       // console.log(this.inputPassword);
       if (!this.LoginPage) {
-        const regx = /^[0-9a-zA-Z@_?]{6,18}$/;
+        const regx = /^[0-9a-zA-Z_]{6,18}$/;
         if (
           !regx.test(this.inputPassword) &&
           this.inputPassword.trim() !== ""
@@ -206,9 +208,7 @@ export default {
     },
     // 监听性别选择
     onSelectSex(e) {
-      console.log(e.mp.detail);
       this.sex = e.mp.detail;
-      console.log(this.sex);
     },
     // 监听忘记密码时输入的手机号
     onPasswordForget(e) {
@@ -255,7 +255,12 @@ export default {
                     that.inputPassword = "";
                   }, 500);
                 } else if (res.data.res === 1) {
+                  if (res.data.userinfo.status === "0") {
+                    Toast.fail("该账户已停用请联系管理员");
+                    return;
+                  }
                   Toast.success("登录成功");
+                  console.log(res.data.userinfo);
                   that.$store.commit("SetCurrentUser", res.data.userinfo);
                   that.$store.commit("SetCurrentDevice", res.data.deviceinfo);
                   if (res.data.deviceinfo) {
@@ -302,6 +307,8 @@ export default {
                 sex: this.sex,
                 admin: 0,
                 status: 1,
+                // userid: Math.random().toString(16).split(".")[1],
+                userid: new Date().getTime().toString(16),
               },
               header: {
                 "content-Type": "application/x-www-form-urlencoded",
@@ -340,27 +347,24 @@ export default {
     forgetPassword(e) {
       const that = this;
       this.isforget = !this.isforget;
-      Toast.loading({
-        message: "验证中...",
-        duration: 0,
-        loadingType: "circular",
-        transition: "van-fade",
-        overlay: true,
-      });
       if (this.inputForgetPhoneNumber.trim() !== "") {
         wx.request({
           url: "https://www.nash141.cloud/mysql/findpassword.php",
-          methods: "POST",
+          method: "POST",
           data: {
             phonenumber: this.inputForgetPhoneNumber,
           },
+          header: {
+            "content-Type": "application/x-www-form-urlencoded",
+          },
           success(res) {
+            console.log(res);
             setTimeout(() => {
               Toast.clear();
               that.isreset = !that.isreset;
             }, 500);
             if (res.data.length !== 0) {
-              that.forgetusername = res.data[0].username;
+              that.forgetusername = res.data.userinfo.username;
             } else {
               Toast.fail("该手机号未注册");
             }
@@ -374,10 +378,13 @@ export default {
       const that = this;
       wx.request({
         url: `https://www.nash141.cloud/mysql/reset.php`,
-        methods: "POST",
+        method: "POST",
         data: {
           password: this.inputNewPassword,
           phonenumber: this.inputForgetPhoneNumber,
+        },
+        header: {
+          "content-Type": "application/x-www-form-urlencoded",
         },
         success(res) {
           that.inputNewPassword = "";
@@ -431,6 +438,7 @@ export default {
   }
 }
 .van-toast--icon {
+  min-width: 100px;
   width: unset !important;
 }
 </style>
