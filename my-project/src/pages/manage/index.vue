@@ -136,7 +136,7 @@ export default {
     getalluser() {
       const that = this;
       wx.request({
-        url: "https://www.nash141.cloud/mysql/getalluserinfo.php",
+        url: "https://www.nash141.cloud:444/mysql/getalluserinfo.php",
         method: "GET",
         success(res) {
           that.userList = res.data;
@@ -147,7 +147,7 @@ export default {
     getuser() {
       const that = this;
       wx.request({
-        url: "https://www.nash141.cloud/mysql/getuserinfo.php",
+        url: "https://www.nash141.cloud:444/mysql/getuserinfo.php",
         method: "GET",
         data: {
           phonenumber: that.currentUser.phonenumber,
@@ -161,7 +161,7 @@ export default {
     enable(username) {
       const that = this;
       wx.request({
-        url: "https://www.nash141.cloud/mysql/operateuser.php",
+        url: "https://www.nash141.cloud:444/mysql/operateuser.php",
         method: "GET",
         data: {
           username,
@@ -180,7 +180,7 @@ export default {
     disable(username) {
       const that = this;
       wx.request({
-        url: "https://www.nash141.cloud/mysql/operateuser.php",
+        url: "https://www.nash141.cloud:444/mysql/operateuser.php",
         method: "GET",
         data: {
           username,
@@ -205,7 +205,7 @@ export default {
       })
         .then(() => {
           wx.request({
-            url: "https://www.nash141.cloud/mysql/operateuser.php",
+            url: "https://www.nash141.cloud:444/mysql/operateuser.php",
             method: "GET",
             data: {
               username,
@@ -242,7 +242,7 @@ export default {
         this.newsex !== 3
       ) {
         wx.request({
-          url: `https://www.nash141.cloud/mysql/updateuserinfo.php`,
+          url: `https://www.nash141.cloud:444/mysql/updateuserinfo.php`,
           methods: "POST",
           data: userinfo,
           success() {

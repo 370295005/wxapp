@@ -2,14 +2,6 @@
 
 <template>
   <div>
-    <!-- <van-notice-bar
-      mode="closeable"
-      background="#ff0000"
-      color="#ffffff"
-      :scrollable="false"
-      v-show="!mqttStatus"
-      text="MQTT连接失败!"
-    /> -->
     <div class="wrapper">
       <div class="header-wrapper">
         <van-skeleton :row="4" :loading="loading">
@@ -128,11 +120,9 @@
 
 <script>
 import { connect } from "mqtt/dist/mqtt.js";
-// var mqtt = require('mqtt')
-// import { connect } from "mqtt";
 import { mapState } from "vuex";
 import Toast from "@vant/weapp/dist/toast/toast";
-const mqttUrl = "wxs://www.nash141.cloud:8084/mqtt";
+const mqttUrl = 'wxs://www.nash141.cloud/mqtt'
 // const mqttUrl = "wx://www.nash141.cloud:8083/mqtt";
 export default {
   data() {
@@ -277,7 +267,6 @@ export default {
   mounted() {
     //连接mqqt伺服器
     this.client = connect(mqttUrl);
-    // this.client = mqtt.connect(mqttUrl)
     this.client.on("connect", () => {
       this.client.subscribe(`${this.currentDevice.pubtopic}`, (err) => {
         if (err) {

@@ -61,7 +61,7 @@ export default {
         };
         console.log(params);
         wx.request({
-          url: "https://www.nash141.cloud/mysql/relationdevice.php",
+          url: "https://www.nash141.cloud:444/mysql/relationdevice.php",
           method: "GET",
           data: params,
           success(res) {

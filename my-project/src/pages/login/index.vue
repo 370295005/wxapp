@@ -238,7 +238,7 @@ export default {
             });
             const that = this;
             wx.request({
-              url: `https://www.nash141.cloud/mysql/login.php`,
+              url: `https://www.nash141.cloud:444/mysql/login.php`,
               method: "POST",
               data: {
                 username: this.inputUserName,
@@ -298,7 +298,7 @@ export default {
             });
             const that = this;
             wx.request({
-              url: "https://www.nash141.cloud/mysql/register.php",
+              url: "https://www.nash141.cloud:444/mysql/register.php",
               method: "POST",
               data: {
                 username: this.inputUserName,
@@ -349,7 +349,7 @@ export default {
       this.isforget = !this.isforget;
       if (this.inputForgetPhoneNumber.trim() !== "") {
         wx.request({
-          url: "https://www.nash141.cloud/mysql/findpassword.php",
+          url: "https://www.nash141.cloud:444/mysql/findpassword.php",
           method: "POST",
           data: {
             phonenumber: this.inputForgetPhoneNumber,
@@ -377,7 +377,7 @@ export default {
     resetPassword(e) {
       const that = this;
       wx.request({
-        url: `https://www.nash141.cloud/mysql/reset.php`,
+        url: `https://www.nash141.cloud:444/mysql/reset.php`,
         method: "POST",
         data: {
           password: this.inputNewPassword,
