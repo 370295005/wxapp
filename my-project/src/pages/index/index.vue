@@ -119,10 +119,11 @@
 </template>
 
 <script>
-import { connect } from "mqtt/dist/mqtt.js";
+import { connect } from "mqtt/dist/mqtt.min.js";
 import { mapState } from "vuex";
 import Toast from "@vant/weapp/dist/toast/toast";
 const mqttUrl = 'wxs://www.nash141.cloud/mqtt'
+// const mqttUrl = 'wxs://www.nash141.cloud:8084/mqtt'
 // const mqttUrl = "wx://www.nash141.cloud:8083/mqtt";
 export default {
   data() {
@@ -274,7 +275,7 @@ export default {
         }
       });
     });
-    //订阅信息
+    //接收信息
     this.client.on("message", (topic, message) => {
       let date = new Date();
       let sec = date.getSeconds();

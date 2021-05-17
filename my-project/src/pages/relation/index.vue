@@ -61,7 +61,7 @@ export default {
         };
         console.log(params);
         wx.request({
-          url: "https://www.nash141.cloud:444/mysql/relationdevice.php",
+          url: "https://www.nash141.cloud/mysql/relationdevice.php",
           method: "GET",
           data: params,
           success(res) {
@@ -130,6 +130,7 @@ export default {
   }
 }
 .van-toast--icon {
+  min-width: 100px !important;
   width: unset !important;
 }
 </style>
